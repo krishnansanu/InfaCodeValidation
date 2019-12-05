@@ -1,7 +1,6 @@
 package com.wow.dev.main;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -9,10 +8,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.OutputStreamCounter;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.wow.dev.infanodes.Config;
 import com.wow.dev.infanodes.Folder;
 import com.wow.dev.infanodes.InfaXMLNodes;
@@ -38,7 +33,7 @@ public class XMLMainReader
 //		ArrayList<String> xmlnodelist, mappingNodeList,sourceNodeList,targetNodeList,configNodeList,sessionNodeList,workflowNodeList;
 		
 		try {
-			xmlfile = new File("config/XMLFile.xml");
+			xmlfile = new File("XMLFile.xml");
 			dbf = DocumentBuilderFactory.newInstance();
 			db = dbf.newDocumentBuilder();
 			doc = db.parse(xmlfile);
@@ -85,44 +80,24 @@ public class XMLMainReader
 //		configNodeList= new ArrayList<String>(); xmlDetails.getNodeDetails("CONFIG",configNodeList);		System.out.println(configNodeList);		
 
 		
-		
-		
-		Paragraph paragraph=new Paragraph();
-		Font font = new Font(); font.setSize(10);
-		paragraph.setFont(font);
-		
 		// Results
 		if(errorList.size() > 0 ) {
-			paragraph.add("");
-			paragraph.add("-------------------------------------------------------------------------------------------\n");
-			paragraph.add("Informatica Components is not created as per ICC Standards. Please find the comments Below\n");
-			paragraph.add("-------------------------------------------------------------------------------------------\n");
 			
+			System.out.println("");	
+			System.out.println("-------------------------------------------------------------------------------------------");
+			System.out.println("Informatica Components is not created as per ICC Standards. Please find the comments Below");
+			System.out.println("-------------------------------------------------------------------------------------------");
+
 			Iterator<String> it = errorList.iterator();
 			while(it.hasNext()) {
-				String str=it.next()+"\n";
-				System.out.println(str);
-				paragraph.add(str);
+				System.out.println(it.next());
 			}
 		}		
 		else {
-			paragraph.add("------------------------------------------------------\n");
-			paragraph.add("Informatica Components is created as per ICC Standards\n");
-			paragraph.add("------------------------------------------------------\n");
+			System.out.println("------------------------------------------------------");
+			System.out.println("Informatica Components is created as per ICC Standards");
+			System.out.println("------------------------------------------------------");
 		}
-		
-
-		com.itextpdf.text.Document pdfDoc= new com.itextpdf.text.Document();
-		try {
-			PdfWriter pdfWriter=PdfWriter.getInstance(pdfDoc, new FileOutputStream("InfaICCSTD.pdf"));
-			pdfDoc.open();
-			pdfDoc.add(paragraph);
-			pdfDoc.close();
-		}catch(Exception e) {
-			
-		}
-		
-		
 		
 	}
 	
