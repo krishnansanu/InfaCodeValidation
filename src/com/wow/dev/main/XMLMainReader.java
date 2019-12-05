@@ -95,7 +95,7 @@ public class XMLMainReader
 		}		
 		else {
 			System.out.println("------------------------------------------------------");
-			System.out.println("Informatica Components is created as per ICC Standards");
+			System.out.println("Informatica Components is created as per ICC Standards....");
 			System.out.println("------------------------------------------------------");
 		}
 		
