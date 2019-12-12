@@ -68,4 +68,8 @@ public class Workflow  extends InfaXMLNodes{
 		validateWorkflowLogDirectory(errorList,folderName);
 	}
 	
+	public String getWorkflowName() {
+		return map.get("WORKFLOW.NAME");
+	}
+	
 }

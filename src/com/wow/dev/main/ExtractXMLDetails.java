@@ -9,6 +9,7 @@ import com.wow.dev.infanodes.Config;
 import com.wow.dev.infanodes.Folder;
 import com.wow.dev.infanodes.InfaXMLNodes;
 import com.wow.dev.infanodes.Mapping;
+import com.wow.dev.infanodes.Repository;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.Source;
 import com.wow.dev.infanodes.Target;
@@ -83,20 +84,36 @@ public class ExtractXMLDetails {
 		
 	}
 	
-	// Function Used
-	public Folder[] extractFolderDetailsToMap(String xmlNodeName) {
-		NodeList list = doc.getDocumentElement().getElementsByTagName(xmlNodeName);
-		Folder folder[]=new Folder[list.getLength()];
-		
-		for(int i=0;i<list.getLength();i++) {
-			Node n= list.item(i);
-			folder[i]=new Folder();
-			if(n.hasAttributes()) {
-				putDetailsToMap(n,folder[i],i);
-			}
-		}
-		return folder;
-	}
+	
+//	// Function Used
+//	public Repository[] extractRepositoryDetailsToMap(String xmlNodeName) {
+//		NodeList list = doc.getDocumentElement().getElementsByTagName(xmlNodeName);
+//		Repository repository[]=new Repository[list.getLength()];
+//		
+//		for(int i=0;i<list.getLength();i++) {
+//			Node n= list.item(i);
+//			repository[i]=new Repository();
+//			if(n.hasAttributes()) {
+//				putDetailsToMap(n,repository[i],i);
+//			}
+//		}
+//		return repository;
+//	}
+//	
+//	// Function Used
+//	public Folder[] extractFolderDetailsToMap(String xmlNodeName) {
+//		NodeList list = doc.getDocumentElement().getElementsByTagName(xmlNodeName);
+//		Folder folder[]=new Folder[list.getLength()];
+//		
+//		for(int i=0;i<list.getLength();i++) {
+//			Node n= list.item(i);
+//			folder[i]=new Folder();
+//			if(n.hasAttributes()) {
+//				putDetailsToMap(n,folder[i],i);
+//			}
+//		}
+//		return folder;
+//	}
 	
 	
 	public void getChildDetailsToMap(Map<String, String> map, Node parentNode,InfaXMLNodes infa) {
