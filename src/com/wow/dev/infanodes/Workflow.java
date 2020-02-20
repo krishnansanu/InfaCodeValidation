@@ -13,7 +13,7 @@ public class Workflow  extends InfaXMLNodes{
 		super.nullValidation("Workflow Name", workflowName, errorList);
 		
 		if(!workflowName.substring(0, 4).contentEquals("wkf_")) {
-			errorList.add("Invalid Start of Workflow Name "+ workflowName +". Workflow Name Should Start with 'wkf_'");
+			errorList.add("Invalid Start of Workflow Name ["+ workflowName +"]. Workflow Name Should Start with 'wkf_'");
 		}
 	}
 	
@@ -21,7 +21,7 @@ public class Workflow  extends InfaXMLNodes{
 		String isValid=map.get("WORKFLOW.ISVALID");
 		System.out.println("Validating Workflow isValid Option. [isValid=" + isValid + "]");
 		if(!isValid.equals("YES")) {
-			errorList.add("Workflow " + map.get("WORKFLOW.NAME") + " is not valid. Please validate the Workflow to find out the issue");
+			errorList.add("Workflow [" + map.get("WORKFLOW.NAME") + "] is not valid. Please validate the Workflow to find out the issue");
 		}
 	}
 	
@@ -37,7 +37,7 @@ public class Workflow  extends InfaXMLNodes{
 		String WORKFLOW_BACKWARD_COMPATIBLE=map.get("WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File");
 		System.out.println("Validating Workflow Backward Compatible Option. [Backward Compatible=" + WORKFLOW_BACKWARD_COMPATIBLE + "]");
 		if(!WORKFLOW_BACKWARD_COMPATIBLE.equals("YES")) {
-			errorList.add("Backward Compatible is not enabled in the Workflow - " + map.get("WORKFLOW.NAME"));
+			errorList.add("Backward Compatible is not enabled in the Workflow - [" + map.get("WORKFLOW.NAME") + "]");
 		}		
 	}
 	
@@ -59,7 +59,7 @@ public class Workflow  extends InfaXMLNodes{
 	}
 	
 	@Override
-	public void validate(ArrayList<String> errorList,String folderName) {
+	public void validate(ArrayList<String> infoList,ArrayList<String> errorList, ArrayList<String> warningList,String folderName) {
 		validateWorkflowName(errorList);
 		isWorkflowValid(errorList);
 		validateIntegrationService(errorList);

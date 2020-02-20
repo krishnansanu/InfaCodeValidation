@@ -9,13 +9,12 @@ public class Session extends InfaXMLNodes{
 		super();
 	}
 	
-	
 	public void validateSessionName(ArrayList<String> errorList) {
 		String sessionName=map.get("SESSION.NAME");
 		super.nullValidation("Session Name", sessionName, errorList);
 		
 		if(!sessionName.substring(0, 2).contentEquals("s_")) {
-			errorList.add("Invalid Start of Session  Name. Session Name Should Start with 's_'");
+			errorList.add("Invalid Start of Session Name. Session ["+ sessionName +"] Name Should Start with 's_'");
 		}
 		
 		String mappingName=map.get("SESSION.MAPPINGNAME");
@@ -29,7 +28,7 @@ public class Session extends InfaXMLNodes{
 		String isValid=map.get("SESSION.ISVALID");
 		System.out.println("Validating Session isValid Option. [isValid=" + isValid + "]");
 		if(!isValid.equals("YES")) {
-			errorList.add("Session " + map.get("SESSION.NAME") + "is not valid. Please validate the session to find out the issue");
+			errorList.add("Session [" + map.get("SESSION.NAME") + "]is not valid. Please validate the session to find out the issue");
 		}
 	}
 	
@@ -37,7 +36,7 @@ public class Session extends InfaXMLNodes{
 		String SESSION_BACKWARD_COMPATIBLE=map.get("SESSION_ATTRIBUTE.Write Backward Compatible Session Log File");
 		System.out.println("Validating Session Backward Compatible Option. [Backward Compatible=" + SESSION_BACKWARD_COMPATIBLE + "]");
 		if(!SESSION_BACKWARD_COMPATIBLE.equals("YES")) {
-			errorList.add("Backward Compatible is not enabled in the session - " + map.get("SESSION.NAME"));
+			errorList.add("Backward Compatible is not enabled in the session [" + map.get("SESSION.NAME") + "]");
 		}		
 	}
 	
@@ -47,7 +46,7 @@ public class Session extends InfaXMLNodes{
 		logDirectory=logDirectory.replace("$PMSessionLogDir", "/infadata/Logs");
 		System.out.println("Validating Sessin Log Directory. [Session Log Directory=" + logDirectory + "]");
 		if(!logDirectory.equals("/infadata/Logs/" + folderName + "/SessLogs/")) {
-			errorList.add("Session" + map.get("SESSION.NAME") + " Logs are not pointing to Project Folder. Session Logs should be written under /infadata/Logs/" + folderName + "/SessLogs/");
+			errorList.add("Session [" + map.get("SESSION.NAME") + "] Logs are not pointing to Project Folder. Session Logs should be written under /infadata/Logs/" + folderName + "/SessLogs/");
 		}
 
 		
@@ -80,11 +79,11 @@ public class Session extends InfaXMLNodes{
 		Set<String> keys=map.keySet();
 		for(String key:keys) {
 			if(key.contains("DTM buffer size")) {
-				System.out.println("Validating Session DTM Buffered Size... ["+ key +" = "+ map.get(key) + "] ");
+				System.out.println("Validating Session DTM Buffer Size... ["+ key +" = "+ map.get(key) + "] ");
 				String DTMBufferedSize=map.get(key);
 				
 				if(!DTMBufferedSize.equals("Auto")) {
-					errorList.add("Session [" + map.get("SESSION.NAME") + "] DTM Buffered Size should be Auto");
+					errorList.add("Session [" + map.get("SESSION.NAME") + "] DTM Buffer Size should be Auto");
 				}
 			}
 		}
@@ -121,7 +120,7 @@ public class Session extends InfaXMLNodes{
 	
 	
 	@Override
-	public void validate(ArrayList<String> errorList, String folderName) {
+	public void validate(ArrayList<String> infoList,ArrayList<String> errorList, ArrayList<String> warningList, String folderName) {
 		validateSessionName(errorList);
 		isSessionValid(errorList);
 		validateSessionBackwardCompatible(errorList);

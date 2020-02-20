@@ -11,6 +11,7 @@ public class Mapping extends InfaXMLNodes{
 		super();
 	}
 	
+	
 	public void validateMappingName(ArrayList<String> errorList) {
 		String mappingName=map.get("MAPPING.NAME");
 		super.nullValidation("Mapping Name", mappingName, errorList);
@@ -74,7 +75,7 @@ public class Mapping extends InfaXMLNodes{
 	}
 	
 	@Override
-	public void validate(ArrayList<String> errorList,String folderName) {
+	public void validate(ArrayList<String> infoList,ArrayList<String> errorList, ArrayList<String> warningList,String folderName) {
 		validateMappingName(errorList);
 		isMappingvalid(errorList);
 		validateMappingVariableName(errorList);

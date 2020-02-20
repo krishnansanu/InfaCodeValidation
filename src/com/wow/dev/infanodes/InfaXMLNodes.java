@@ -41,5 +41,5 @@ public class InfaXMLNodes {
 			errorList.add("Invalid " + type +". ["+ type + "="+ value +"]");
 	}
 	
-	public void validate(ArrayList<String> errorList, String folderName) {}
+	public void validate(ArrayList<String> infoList,ArrayList<String> errorList, ArrayList<String> warningList,String folderName) {}
 }

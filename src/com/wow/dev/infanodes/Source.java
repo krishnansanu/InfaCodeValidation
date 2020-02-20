@@ -10,7 +10,6 @@ public class Source extends InfaXMLNodes{
 		super();
 	}
 	
-	
 	public void extractSourceDetails() {
 		sourceType=map.get("SOURCE.DATABASETYPE");
 	}
@@ -23,7 +22,7 @@ public class Source extends InfaXMLNodes{
 	
 	
 	@Override
-	public void validate(ArrayList<String> errorList,String folderName) {
+	public void validate(ArrayList<String> infoList,ArrayList<String> errorList, ArrayList<String> warningList,String folderName) {
 		
 	}
 

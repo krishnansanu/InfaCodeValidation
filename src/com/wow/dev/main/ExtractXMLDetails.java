@@ -1,15 +1,22 @@
 package com.wow.dev.main;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import com.wow.dev.infanodes.Config;
-import com.wow.dev.infanodes.Folder;
 import com.wow.dev.infanodes.InfaXMLNodes;
 import com.wow.dev.infanodes.Mapping;
-import com.wow.dev.infanodes.Repository;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.Source;
 import com.wow.dev.infanodes.Target;
@@ -17,147 +24,36 @@ import com.wow.dev.infanodes.Workflow;
 import org.w3c.dom.NamedNodeMap;  
 
 public class ExtractXMLDetails {
-	
+	private File xmlfile=null;
+	private DocumentBuilderFactory dbf; 
+	private DocumentBuilder db; 
 	private Document doc;
-	
 		
 	//Public Constructor to create instance for XML to be read
+	public ExtractXMLDetails(String workflowName) {
+		try {
+			xmlfile = new File(workflowName);
+			dbf = DocumentBuilderFactory.newInstance();
+			db = dbf.newDocumentBuilder();
+			doc = db.parse(xmlfile);
+			doc.getDocumentElement().normalize();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public ExtractXMLDetails(Document doc) {
 		this.doc=doc;
 	}
-
-	// Function used
-	public ArrayList<String> extractXMLNodes() {
-		ArrayList<String> xmlnodelist = new ArrayList<String>();
-		readChildNodes(doc.getDocumentElement().getChildNodes(),xmlnodelist);
-		return xmlnodelist;
-	}
 	
-	// Function used
-	public void readChildNodes(NodeList node,ArrayList<String> xmlnodelist) {
-		for(int i=0;i<node.getLength();i++) {
-			Node n=node.item(i);
-			if(n.getNodeName()!="#text") xmlnodelist.add(n.getNodeName());
-			if(n.getNodeName()!="#text" && n.hasChildNodes()) {
-				readChildNodes(n.getChildNodes(),xmlnodelist);
-			}
-		}
-	}
-	
-	// Function Used
-	public void putDetailsToMap(Node n,InfaXMLNodes infa, int i) {
-		NamedNodeMap nodeMap = n.getAttributes();
-		String msg="",key="",value="";
-		for(int j=0;j<nodeMap.getLength();j++) {
-			String attrib=nodeMap.item(j).getNodeName();
-			String parentNode=n.getParentNode().getNodeName();
-			String currentNode=n.getNodeName();
-			String nodeAttribName=nodeMap.getNamedItem(attrib).getNodeName();
-			String nodeAttribValue=nodeMap.getNamedItem(attrib).getNodeValue();
-			
-//			System.out.println("CurrentNode - " + currentNode);
-			if(currentNode.contains("ATTRIBUTE") || nodeAttribName.contains("ATTRIBUTE") ) {
-				if(msg=="") {
-					msg=parentNode+"_"+currentNode+ "." + nodeAttribValue;
-					key=parentNode+"_"+currentNode+ "." + nodeAttribValue;
-					value="";
-					continue;
-				}else {
-					msg+=nodeAttribValue+ "\n";
-					value=nodeAttribValue;
-				}
-			}else {
-				key=currentNode+"."+nodeAttribName;
-				value=nodeAttribValue;
-			}
-			
-			
-			
-			if(infa.getMap().containsKey(key)){
-				infa.setValue(key+"("+i+")", value);
-			}else {
-				infa.setValue(key, value);
-			}
-			
-			msg="";
-		}
-		
-	}
-	
-	
-//	// Function Used
-//	public Repository[] extractRepositoryDetailsToMap(String xmlNodeName) {
-//		NodeList list = doc.getDocumentElement().getElementsByTagName(xmlNodeName);
-//		Repository repository[]=new Repository[list.getLength()];
-//		
-//		for(int i=0;i<list.getLength();i++) {
-//			Node n= list.item(i);
-//			repository[i]=new Repository();
-//			if(n.hasAttributes()) {
-//				putDetailsToMap(n,repository[i],i);
-//			}
-//		}
-//		return repository;
-//	}
-//	
-//	// Function Used
-//	public Folder[] extractFolderDetailsToMap(String xmlNodeName) {
-//		NodeList list = doc.getDocumentElement().getElementsByTagName(xmlNodeName);
-//		Folder folder[]=new Folder[list.getLength()];
-//		
-//		for(int i=0;i<list.getLength();i++) {
-//			Node n= list.item(i);
-//			folder[i]=new Folder();
-//			if(n.hasAttributes()) {
-//				putDetailsToMap(n,folder[i],i);
-//			}
-//		}
-//		return folder;
-//	}
-	
-	
-	public void getChildDetailsToMap(Map<String, String> map, Node parentNode,InfaXMLNodes infa) {
-		if(parentNode.hasChildNodes()) {
-			NodeList childNodes = parentNode.getChildNodes();
-			for(int i=0;i<childNodes.getLength();i++) {
-				Node n = childNodes.item(i);
-				if(n.hasAttributes()) {
-					putDetailsToMap(n, infa,i);
-					
-				}
-				
-				if(n.hasChildNodes()) {
-					getChildDetailsToMap(map,n,infa);
-				}
-				
-			}
-		}		
-	}
-	
-	// Function to get the Node 
-	public void getNodeDetails(String xmlNodeName, ArrayList<String> arrayList) {
-		String format="";
-		NodeList list = doc.getDocumentElement().getElementsByTagName(xmlNodeName);
-		for(int i=0;i<list.getLength();i++) {
-			Node n = list.item(i);
-			if(!arrayList.contains(n.getNodeName())) {
-				arrayList.add(n.getNodeName());
-			}
-			
-			if(n.hasChildNodes()) {
-				format=format + "\t ";
-				NodeList child = n.getChildNodes();
-				for(int j=0;j<child.getLength();j++) {
-					Node c = child.item(j);
-					getNodeDetails(c.getNodeName(),arrayList);
-				}
-			}
-		}
-	}
-	
-
-	
-	// Function used
+	// Function to create object for corresponding category and extract information for it
 	public InfaXMLNodes[] extractDetailsToMap(String xmlNodeName) {
 		NodeList list = doc.getDocumentElement().getElementsByTagName(xmlNodeName);
 		InfaXMLNodes xmlNode[]=null;
@@ -193,6 +89,61 @@ public class ExtractXMLDetails {
 		}
 		return xmlNode;
 	}
+	
+	
+	//Function to extract specific object details and puts into its corresponding Map
+	public void putDetailsToMap(Node n,InfaXMLNodes infa, int i) {
+		NamedNodeMap nodeMap = n.getAttributes();
+		String msg="",key="",value="";
+		for(int j=0;j<nodeMap.getLength();j++) {
+			String attrib=nodeMap.item(j).getNodeName();
+			String parentNode=n.getParentNode().getNodeName();
+			String currentNode=n.getNodeName();
+			String nodeAttribName=nodeMap.getNamedItem(attrib).getNodeName();
+			String nodeAttribValue=nodeMap.getNamedItem(attrib).getNodeValue();
+			
+			if(currentNode.contains("ATTRIBUTE") || nodeAttribName.contains("ATTRIBUTE") ) {
+				if(msg=="") {
+					msg=parentNode+"_"+currentNode+ "." + nodeAttribValue;
+					key=parentNode+"_"+currentNode+ "." + nodeAttribValue;
+					value="";
+					continue;
+				}else {
+					msg+=nodeAttribValue+ "\n";
+					value=nodeAttribValue;
+				}
+			}else {
+				key=currentNode+"."+nodeAttribName;
+				value=nodeAttribValue;
+			}
+			
+			
+			if(infa.getMap().containsKey(key)){
+				infa.setValue(key+"("+i+")", value);
+			}else {
+				infa.setValue(key, value);
+			}
+			msg="";
+		}
+	}
+	
+	//Function to check if a node has any child and gets its details
+	public void getChildDetailsToMap(Map<String, String> map, Node parentNode,InfaXMLNodes infa) {
+		if(parentNode.hasChildNodes()) {
+			NodeList childNodes = parentNode.getChildNodes();
+			for(int i=0;i<childNodes.getLength();i++) {
+				Node n = childNodes.item(i);
+				if(n.hasAttributes()) {
+					putDetailsToMap(n, infa,i);
+				}
+				
+				if(n.hasChildNodes()) {
+					getChildDetailsToMap(map,n,infa);
+				}
+			}
+		}		
+	}
+
 	
 	
 }
