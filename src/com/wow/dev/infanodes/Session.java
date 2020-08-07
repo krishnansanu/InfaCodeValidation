@@ -173,20 +173,6 @@ public class Session{
 		
 	}
 	
-	public void sessionValidationResults() {
-		System.out.println(sessionName);
-		System.out.println("\tSession Naming Standards\t\t\t: " + sessionNameValidation);
-		System.out.println("\tIs Session Valid\t\t\t\t: " + sessionIsValidValidation);
-		System.out.println("\tBackward compatible on sess log\t\t\t: " + SESSION_BACKWARD_COMPATIBLEValidation);
-		System.out.println("\tSession log naming standard\t\t\t: " + sessionLogDirectoryValidation);
-		System.out.println("\tSession log folder name\t\t\t\t: " + sessionLogNameValidation);
-		System.out.println("\tStop on Error\t\t\t\t\t: " + sessionStopOnErrosValidation);
-		System.out.println("\tSession DTM Buffered Size\t\t\t: " + sessionDTMBufferedSizeValidation); 
-		System.out.println("\tSession SQL Query\t\t\t\t: " + sessionSqlQueryValidation);
-		System.out.println("\tSession Override Query\t\t\t\t: " + sessionSqlOverrideValidation);
-
-	}
-
 	//Getter
 	public Map<String, String> getMap() {
 		return map;

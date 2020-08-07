@@ -1,6 +1,5 @@
 package com.wow.dev.infanodes;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class Workflow{
@@ -99,16 +98,6 @@ public class Workflow{
 		workflowlogDirectoryValidation=validateWorkflowLogDirectory(validationList)?"PASS":"WARNING";
 	}
 	
-	public void workflowValidationResults() {
-		System.out.println(workflowName);
-		System.out.println("\tWorkflow Naming Standards\t\t\t: " + workflowNameValidation);
-		System.out.println("\tIs Workflow Valid\t\t\t\t: " + workflowIsValidValidation);
-		System.out.println("\tWorkflow Integration Service\t\t\t: " + workflowIntegrationServiceValidation);
-		System.out.println("\tBackward compatible on Workflow log\t\t: " + WORKFLOW_BACKWARD_COMPATIBLEValidaiton);
-		System.out.println("\tWorkflow log naming standard\t\t\t: " + workflowlogDirectoryValidation);
-		System.out.println("\tWorkflow log folder name\t\t\t: " + workflowLogNameValidation);
-	}
-
 	public Map<String, String> getMap() {
 		return map;
 	}
