@@ -1,75 +1,168 @@
 package com.wow.dev.infanodes;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class Workflow  extends InfaXMLNodes{
+public class Workflow{
 	
-	public Workflow() {
-		super();
+	// Workflow Properties Attributes
+	private Map<String, String> map;
+	private String workflowName;
+	private String isValid;
+	private String integrationService;
+	private String WORKFLOW_BACKWARD_COMPATIBLE;
+	private String logName;
+	private String logDirectory;
+	private String folderName;
+	
+	// Workflow Validation Attributes
+	private String workflowNameValidation;
+	private String workflowIsValidValidation;
+	private String workflowIntegrationServiceValidation;
+	private String WORKFLOW_BACKWARD_COMPATIBLEValidaiton;
+	private String workflowLogNameValidation;
+	private String workflowlogDirectoryValidation;
+	
+	
+	public Workflow(Map<String,String> map,String folderName) {
+		this.map=map;
+		this.folderName=folderName;
 	}
 	
-	public void validateWorkflowName(ArrayList<String> errorList) {
-		String workflowName=map.get("WORKFLOW.NAME");
-		super.nullValidation("Workflow Name", workflowName, errorList);
+	public boolean validateWorkflowName(Map<String,String> validationList) {
+		workflowName=map.get("WORKFLOW.NAME");
 		
 		if(!workflowName.substring(0, 4).contentEquals("wkf_")) {
-			errorList.add("Invalid Start of Workflow Name ["+ workflowName +"]. Workflow Name Should Start with 'wkf_'");
+			validationList.put("WORKFLOW.NAME","Invalid Start of Workflow Name ["+ workflowName +"]. Workflow Name Should Start with 'wkf_'");
+			return false;
 		}
+		return true;
 	}
 	
-	public void isWorkflowValid(ArrayList<String> errorList) {
-		String isValid=map.get("WORKFLOW.ISVALID");
+	public boolean isWorkflowValid(Map<String,String> validationList) {
+		isValid=map.get("WORKFLOW.ISVALID");
 		System.out.println("Validating Workflow isValid Option. [isValid=" + isValid + "]");
 		if(!isValid.equals("YES")) {
-			errorList.add("Workflow [" + map.get("WORKFLOW.NAME") + "] is not valid. Please validate the Workflow to find out the issue");
+			validationList.put("WORKFLOW.ISVALID","Workflow [" + map.get("WORKFLOW.NAME") + "] is not valid. Please validate the Workflow to find out the issue");
+			return false;
 		}
+		return true;
 	}
 	
-	public void validateIntegrationService(ArrayList<String> errorList) {
-		String integrationService=map.get("WORKFLOW.SERVERNAME");
+	public boolean validateIntegrationService(Map<String,String> validationList) {
+		integrationService=map.get("WORKFLOW.SERVERNAME");
 		if(integrationService.contains("IS_ENT")) {
-			errorList.add("Workflow [" + map.get("WORKFLOW.NAME") + "] Integration is selected as IS_ENT* Please Verify if there is a special requirement to run the workflow in ENT Integration Service");
+			validationList.put("WORKFLOW.INTEGRATIONSERVERNAME","Workflow [" + map.get("WORKFLOW.NAME") + "] Integration is selected as IS_ENT* Please Verify if there is a special requirement to run the workflow in ENT Integration Service");
+			return false;
 		}
+		return true;
 	}
 	
 	
-	public void validateWorkflowBackwardCompatible(ArrayList<String> errorList) {
-		String WORKFLOW_BACKWARD_COMPATIBLE=map.get("WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File");
+	public boolean validateWorkflowBackwardCompatible(Map<String,String> validationList) {
+		WORKFLOW_BACKWARD_COMPATIBLE=map.get("WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File");
 		System.out.println("Validating Workflow Backward Compatible Option. [Backward Compatible=" + WORKFLOW_BACKWARD_COMPATIBLE + "]");
 		if(!WORKFLOW_BACKWARD_COMPATIBLE.equals("YES")) {
-			errorList.add("Backward Compatible is not enabled in the Workflow - [" + map.get("WORKFLOW.NAME") + "]");
+			validationList.put("WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File","Backward Compatible is not enabled in the Workflow - [" + map.get("WORKFLOW.NAME") + "]");
+			return false;
 		}		
+		return true;
 	}
 	
-	public void validateWorkflowLog(ArrayList<String> errorList) {
-		String logName=map.get("WORKFLOW_ATTRIBUTE.Workflow Log File Name");
+	public boolean validateWorkflowLog(Map<String,String> validationList) {
+		logName=map.get("WORKFLOW_ATTRIBUTE.Workflow Log File Name");
 		System.out.println("Validating Workflow log Name. [Workflow Log Name=" + logName + "]");
 		if(!logName.equals(map.get("WORKFLOW.NAME")+".log")) {
-			errorList.add("Workflow log name should be same as Workflow name [" + map.get("Workflow.NAME") + "].");
+			validationList.put("WORKFLOW_ATTRIBUTE.Workflow Log File Name","Workflow log name should be same as Workflow name [" + map.get("Workflow.NAME") + "].");
+			return false;
 		}
+		return true;
 	}
 	
-	public void validateWorkflowLogDirectory(ArrayList<String> errorList, String folderName) {
+	public boolean validateWorkflowLogDirectory(Map<String,String> validationList) {
 		String logDirectory=map.get("WORKFLOW_ATTRIBUTE.Workflow Log File Directory");
 		logDirectory=logDirectory.replace("$PMWorkflowLogDir", "/infadata/Logs");
 		System.out.println("Validating workflow log directory. [workflow log directory=" + logDirectory + "]");
 		if(!logDirectory.equals("/infadata/Logs/" + folderName + "/WkfLogs/")) {
-			errorList.add("Workflow [" + map.get("WORKFLOW.NAME") + "] Logs are not pointing to Project Folder. Workflow Logs should be written under /infadata/Logs/" + folderName + "/WkfLogs/");
+			validationList.put("WORKFLOW_ATTRIBUTE.Workflow Log File Directory", "Workflow [" + map.get("WORKFLOW.NAME") + "] Logs are not pointing to Project Folder. Workflow Logs should be written under /infadata/Logs/" + folderName + "/WkfLogs/");
+			return false;
 		}
+		return true;
 	}
 	
-	@Override
-	public void validate(ArrayList<String> infoList,ArrayList<String> errorList, ArrayList<String> warningList,String folderName) {
-		validateWorkflowName(errorList);
-		isWorkflowValid(errorList);
-		validateIntegrationService(errorList);
-		validateWorkflowBackwardCompatible(errorList);
-		validateWorkflowLog(errorList);
-		validateWorkflowLogDirectory(errorList,folderName);
+	public void validate(Map<String,String> validationList) {
+		workflowNameValidation=validateWorkflowName(validationList)?"PASS":"FAIL";
+		workflowIsValidValidation=isWorkflowValid(validationList)?"PASS":"FAIL";
+		workflowIntegrationServiceValidation=validateIntegrationService(validationList)?"PASS":"WARNING";
+		WORKFLOW_BACKWARD_COMPATIBLEValidaiton=validateWorkflowBackwardCompatible(validationList)?"PASS":"FAIL";
+		workflowLogNameValidation=validateWorkflowLog(validationList)?"PASS":"FAIL";
+		workflowlogDirectoryValidation=validateWorkflowLogDirectory(validationList)?"PASS":"WARNING";
 	}
 	
+	public void workflowValidationResults() {
+		System.out.println(workflowName);
+		System.out.println("\tWorkflow Naming Standards\t\t\t: " + workflowNameValidation);
+		System.out.println("\tIs Workflow Valid\t\t\t\t: " + workflowIsValidValidation);
+		System.out.println("\tWorkflow Integration Service\t\t\t: " + workflowIntegrationServiceValidation);
+		System.out.println("\tBackward compatible on Workflow log\t\t: " + WORKFLOW_BACKWARD_COMPATIBLEValidaiton);
+		System.out.println("\tWorkflow log naming standard\t\t\t: " + workflowlogDirectoryValidation);
+		System.out.println("\tWorkflow log folder name\t\t\t: " + workflowLogNameValidation);
+	}
+
+	public Map<String, String> getMap() {
+		return map;
+	}
+
 	public String getWorkflowName() {
-		return map.get("WORKFLOW.NAME");
+		return workflowName;
 	}
+
+	public String getIsValid() {
+		return isValid;
+	}
+
+	public String getIntegrationService() {
+		return integrationService;
+	}
+
+	public String getWORKFLOW_BACKWARD_COMPATIBLE() {
+		return WORKFLOW_BACKWARD_COMPATIBLE;
+	}
+
+	public String getLogName() {
+		return logName;
+	}
+
+	public String getLogDirectory() {
+		return logDirectory;
+	}
+
+	public String getWorkflowNameValidation() {
+		return workflowNameValidation;
+	}
+
+	public String getWorkflowIsValidValidation() {
+		return workflowIsValidValidation;
+	}
+
+	public String getWorkflowIntegrationServiceValidation() {
+		return workflowIntegrationServiceValidation;
+	}
+
+	public String getWORKFLOW_BACKWARD_COMPATIBLEValidaiton() {
+		return WORKFLOW_BACKWARD_COMPATIBLEValidaiton;
+	}
+
+	public String getWorkflowLogNameValidation() {
+		return workflowLogNameValidation;
+	}
+
+	public String getWorkflowlogDirectoryValidation() {
+		return workflowlogDirectoryValidation;
+	}
+	
+	
+	
+	
 	
 }

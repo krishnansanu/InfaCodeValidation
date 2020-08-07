@@ -1,13 +1,15 @@
 package com.wow.dev.infanodes;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class Source extends InfaXMLNodes{
+public class Source{
 	
+	private Map<String, String> map;
 	private String sourceType;
 	
 	public Source() {
-		super();
+
 	}
 	
 	public void extractSourceDetails() {
@@ -17,11 +19,11 @@ public class Source extends InfaXMLNodes{
 	
 	public void validateSourceName(ArrayList<String> errorList) {
 		String sourceName=map.get("SOURCE.NAME");
-		super.nullValidation("Source Name", sourceName, errorList);
+
 	}
 	
 	
-	@Override
+	
 	public void validate(ArrayList<String> infoList,ArrayList<String> errorList, ArrayList<String> warningList,String folderName) {
 		
 	}
