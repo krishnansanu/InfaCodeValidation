@@ -591,6 +591,9 @@
             <CONFIGREFERENCE REFOBJECTNAME ="default_session_config" TYPE ="Session config">
                 <ATTRIBUTE NAME ="Stop on errors" VALUE ="1"/>
             </CONFIGREFERENCE>
+			<CONFIGREFERENCE REFOBJECTNAME ="default_session_config" TYPE ="Session config">
+                <ATTRIBUTE NAME ="Override tracing" VALUE ="Terse"/>
+            </CONFIGREFERENCE>
             <SESSIONCOMPONENT REFOBJECTNAME ="presession_variable_assignment" REUSABLE ="NO" TYPE ="Pre-session variable assignment">
                 <TASK DESCRIPTION ="" NAME ="presession_variable_assignment" REUSABLE ="NO" TYPE ="Command" VERSIONNUMBER ="1">
                     <ATTRIBUTE NAME ="Fail task if any command fails" VALUE ="NO"/>

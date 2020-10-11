@@ -24,6 +24,8 @@ public class InfaValidationMain
 		
 		PDFResult pdf = new PDFResult();
 		pdf.generateOutput(opv, validationList, peerReviewerName);
+		
+		System.gc();
 			
 	}
 }  

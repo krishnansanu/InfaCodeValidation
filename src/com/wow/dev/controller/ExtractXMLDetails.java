@@ -89,7 +89,7 @@ public class ExtractXMLDetails {
 			
 			
 			if(objectDetails.containsKey(key)){
-				objectDetails.put(key+"("+i+")", value);
+				objectDetails.put(key+"("+(i/2)+")", value);
 			}else {
 				objectDetails.put(key, value);
 			}

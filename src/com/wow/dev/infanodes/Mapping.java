@@ -11,12 +11,16 @@ public class Mapping{
 	private String isValid;
 	private String folderName;
 	
+	private int mappingVariableCount;
+	private int transformationCount;
+	private String mappingVariablesList;
+	private String transformationList;
+	
 	// Mapping Validation Attribute
 	private String mappingNameValidation;
 	private String mappingIsValidValidation;
 	private String mappingVariableNameValidation;
 	private String mappingSQLQueryValidation;
-	private String mappingSQLOverrideValidation;
 	
 	public Mapping(Map<String, String> map,String folderName) {
 		this.map=map;
@@ -24,36 +28,44 @@ public class Mapping{
 	}
 	
 	
-	public boolean  validateMappingName(Map<String,String> validationList) {
+	public boolean  validateMappingName(Map<String,String> validationList,int i) {
 		mappingName=map.get("MAPPING.NAME");
-		
+		System.out.println("Validating Mapping Name...[Mapping Name="+mappingName+"]");
 		if(!mappingName.substring(0, 2).contentEquals("m_")) {
-			validationList.put("MAPPING.NAME","Invalid Start of Mapping Name [" + map.get("MAPPING.NAME") + "]. Mapping Name Should Start with 'm_'");
+			validationList.put(i+"_MAPPING.NAME","Invalid Start of Mapping Name [" + map.get("MAPPING.NAME") + "]. Mapping Name Should Start with 'm_'");
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean isMappingvalid(Map<String,String> validationList) {
+	public boolean isMappingvalid(Map<String,String> validationList,int i) {
 		isValid=map.get("MAPPING.ISVALID");
 		System.out.println("Validating if Mapping is valid... [Mapping IsValid=" + isValid + "] ");
 		
 		if(!isValid.equals("YES")) {
-			validationList.put("MAPPING.ISVALID","Mapping "+ map.get("MAPPING.NAME")  +" is not valid. Please Validate the mapping to fix the issues.");
+			validationList.put(i+"_MAPPING.ISVALID","Mapping "+ map.get("MAPPING.NAME")  +" is not valid. Please Validate the mapping to fix the issues.");
 			return false;
 		}
 		return true;
 	}
 
 	
-	public boolean validateMappingVariableName(Map<String,String> validationList) {
+	public boolean validateMappingVariableName(Map<String,String> validationList,int i) {
 		Set<String> keys=map.keySet();
 		for(String key:keys) {
 			if(key.contains("MAPPINGVARIABLE.NAME")) {
+				mappingVariableCount++;
 				System.out.println("Validating MappingVariable Name... ["+ key +" = "+ map.get(key) + "] ");
 				String mappingVariableName=map.get(key);
+				
+				if (mappingVariablesList==null) {
+					mappingVariablesList=mappingVariableName;
+				}else {
+					mappingVariablesList+=", "+mappingVariableName;
+				}
+				
 				if(!mappingVariableName.substring(0, 2).equals("$$")) {
-					validationList.put("MAPPINGVARIABLE.NAME","Invalid MappingVariable Name - " + mappingVariableName + " on [" + map.get("MAPPING.NAME") + "]. MappingVariable should be suffixed with $$");
+					validationList.put(i+"_MAPPINGVARIABLE.NAME","Invalid MappingVariable Name - " + mappingVariableName + " on [" + map.get("MAPPING.NAME") + "]. MappingVariable should be suffixed with $$");
 					return false;
 				}
 			}
@@ -62,7 +74,7 @@ public class Mapping{
 	}
 	
 	// Function to identify any Override Queries used in mapping for source
-	public boolean validateSQLQuery(Map<String,String> validationList) {
+	public boolean validateSQLQuery(Map<String,String> validationList,int i) {
 		Set<String> keys=map.keySet();
 		for(String key:keys) {
 			if(key.contains("Sql Query")) {
@@ -70,36 +82,34 @@ public class Mapping{
 				String sqlOverride=map.get(key);
 				
 				if(!sqlOverride.equals("")) {
-					validationList.put("MAPPING.Sql Query","Source SQL Override Query has been idenified in the mapping - [" + map.get("MAPPING.NAME") + "].");
+					validationList.put(i+"_MAPPING.Sql Query","Source SQL Override Query has been idenified in the mapping - [" + map.get("MAPPING.NAME") + "].");
 					return false;
 				}
 			}
 		}
 		return true;
 	}
-	
-	// Funcion to identify any Override Queries used in mapping for lookup
-	public boolean validateOverrideQuery(Map<String,String> validationList) {
+
+	public void getTransformationDetails() {
 		Set<String> keys=map.keySet();
 		for(String key:keys) {
-			if(key.contains("Sql Override")) {
-				System.out.println("Validating MappingVariable SQL Overide Query... ["+ key +"] ");
-				String sqlOverride=map.get(key);
-				if(!sqlOverride.equals("")) {
-					validationList.put("MAPPING.SQL Override","LKP Override Query has been idenified in the mapping - [" + map.get("MAPPING.NAME") + "].");
-					return false;
+			if(key.contains("TRANSFORMATION.NAME")) {
+				transformationCount++;
+				if(transformationList==null) {
+					transformationList=map.get(key);
+				}else {
+					transformationList+=", "+map.get(key);
 				}
 			}
 		}
-		return true;
 	}
 	
-	public void validate(Map<String,String> validationList) {
-		mappingNameValidation=validateMappingName(validationList)?"PASS":"FAIL";
-		mappingIsValidValidation=isMappingvalid(validationList)?"PASS":"FAIL";
-		mappingVariableNameValidation=validateMappingVariableName(validationList)?"PASS":"FAIL";
-		mappingSQLQueryValidation=validateSQLQuery(validationList)?"PASS":"WARNING";
-		mappingSQLOverrideValidation=validateOverrideQuery(validationList)?"PASS":"WARNING";
+	public void validate(Map<String,String> validationList,int i) {
+		mappingNameValidation=validateMappingName(validationList,i)?"PASS":"FAIL";
+		mappingIsValidValidation=isMappingvalid(validationList,i)?"PASS":"FAIL";
+		mappingVariableNameValidation=validateMappingVariableName(validationList,i)?"PASS":"FAIL";
+		mappingSQLQueryValidation=validateSQLQuery(validationList,i)?"PASS":"WARNING";
+		getTransformationDetails();
 	}
 	
 	public void mappingValidationResults() {
@@ -108,7 +118,6 @@ public class Mapping{
 		System.out.println("\tIs Mapping Valid\t\t\t\t: " + mappingIsValidValidation);
 		System.out.println("\tMapping  variables Standards\t\t\t: " + mappingVariableNameValidation);
 		System.out.println("\tMapping SQL Query Validation\t\t\t: " + mappingSQLQueryValidation);
-		System.out.println("\tMapping SQL Override Validation\t\t\t: " + mappingSQLOverrideValidation);
 	}
 
 
@@ -147,9 +156,25 @@ public class Mapping{
 	}
 
 
-	public String getMappingSQLOverrideValidation() {
-		return mappingSQLOverrideValidation;
+	public int getMappingVariableCount() {
+		return mappingVariableCount;
 	}
+
+
+	public int getTransformationCount() {
+		return transformationCount;
+	}
+
+
+	public String getMappingVariablesList() {
+		return mappingVariablesList;
+	}
+
+
+	public String getTransformationList() {
+		return transformationList;
+	}
+	
 	
 	
 }
