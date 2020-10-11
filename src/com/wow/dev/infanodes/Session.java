@@ -17,6 +17,7 @@ public class Session{
 	private SessionTaskInstance[] taskInstance;
 	private String FAIL_PARENT_IF_INSTANCE_DID_NOT_RUN;
 	private String FAIL_PARENT_IF_INSTANCE_FAILS;
+	private String hello;
 	
 	//Session Validation Attributes
 	private String sessionNameValidation;
