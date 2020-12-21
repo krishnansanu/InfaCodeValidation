@@ -37,12 +37,10 @@ public class Aggregator extends Transformation{
 	public boolean validatetracingLevel(Map<String, String> validationList, int i) {
 		this.tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
 		return super.validatetracingLevel(tracingLevel, transformationName, validationList, i);
-		
 	}
 	
 	public boolean validatePortName(Map<String, String> validationList, int i) {
 		return super.validatePortName(transformationName, validationList, i);
-		
 	}
 	
 	public boolean validateLookupCacheDirectoryName(Map<String,String> validationList,int i) {
@@ -57,7 +55,7 @@ public class Aggregator extends Transformation{
 	}
 	
 	public String validateIsSoretedInput() {
-		System.out.println("Validating If Lookup inputs are sorted...");
+		System.out.println("Validating If Aggregator inputs are sorted...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Sorted Input");
 	}
 	

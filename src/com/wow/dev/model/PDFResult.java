@@ -27,6 +27,7 @@ import com.wow.dev.infanodes.Expression;
 import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
 import com.wow.dev.infanodes.Session;
+import com.wow.dev.infanodes.Sorter;
 import com.wow.dev.infanodes.Transformation;
 import com.wow.dev.infanodes.Workflow;
 
@@ -209,7 +210,18 @@ public class PDFResult {
 						log_msg("   Is Sorted Inputs" ,":   "+ agg.getIsSoretedInputValidation(),TAB_SPLIT);
 						log_msg("   Aggregator Data Cache Size" ,":   "+ agg.getDataCacheSizeValidation(),TAB_SPLIT);
 						log_msg("   Aggregator Index Cache Size" ,":   "+ agg.getIndexCacheSizeValidation(),TAB_SPLIT);
-						
+						log_msg("   Aggregator Tracing Level" ,":   "+ agg.getTracingLevelValidation(),TAB_SPLIT);
+					break;
+					
+					case "Sorter":
+						Sorter srt=(Sorter)transformation[i];
+						log_msg("   Sorter Name" ,":   "+ srt.getTransformationName(),TAB_SPLIT);
+						log_msg("   Sorter Naming Standards" ,":   "+ srt.getTransformationNameValidation(),TAB_SPLIT);
+						log_msg("   Sorter PortName Standards" ,":   "+ srt.getPortNameValidation(),TAB_SPLIT);
+						log_msg("   Is Distinct Data" ,":   "+ srt.getIsDistinctInputValidation(),TAB_SPLIT);
+						log_msg("   Sorter Cache Size" ,":   "+ srt.getCacheSizeValidation(),TAB_SPLIT);
+						log_msg("   Sorter Cache Directory " ,":   "+ srt.getCacheDirectoryValidation(),TAB_SPLIT);
+						log_msg("   Sorter Tracing Level" ,":   "+ srt.getTracingLevelValidation(),TAB_SPLIT);
 
 				}
 				log_msg("");

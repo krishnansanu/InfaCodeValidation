@@ -8,6 +8,7 @@ import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.SessionTaskInstance;
+import com.wow.dev.infanodes.Sorter;
 import com.wow.dev.infanodes.Transformation;
 import com.wow.dev.infanodes.Workflow;
 
@@ -77,6 +78,7 @@ public class OnPremValidation {
 				case "Expression": transformations[i]=new Expression(trans,"Expression");break;
 				case "Lookup Procedure": transformations[i]=new Lookup(trans,"Lookup",folderName);break;
 				case "Aggregator": transformations[i]=new Aggregator(trans,"Aggregator",folderName);break;
+				case "Sorter": transformations[i]=new Sorter(trans,"Sorter",folderName);break;
 			}
 			
 			if(transformations[i]!=null) transformations[i].validate(validationList, i);

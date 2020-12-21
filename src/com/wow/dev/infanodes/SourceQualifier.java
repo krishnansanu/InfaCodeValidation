@@ -3,12 +3,12 @@ package com.wow.dev.infanodes;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Source{
+public class SourceQualifier{
 	
 	private Map<String, String> map;
 	private String sourceType;
 	
-	public Source() {
+	public SourceQualifier() {
 
 	}
 	
