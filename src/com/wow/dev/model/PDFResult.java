@@ -28,6 +28,7 @@ import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.Sorter;
+import com.wow.dev.infanodes.SourceQualifier;
 import com.wow.dev.infanodes.Transformation;
 import com.wow.dev.infanodes.Workflow;
 
@@ -222,7 +223,22 @@ public class PDFResult {
 						log_msg("   Sorter Cache Size" ,":   "+ srt.getCacheSizeValidation(),TAB_SPLIT);
 						log_msg("   Sorter Cache Directory " ,":   "+ srt.getCacheDirectoryValidation(),TAB_SPLIT);
 						log_msg("   Sorter Tracing Level" ,":   "+ srt.getTracingLevelValidation(),TAB_SPLIT);
-
+					break;
+						
+					case "Source Qualifier":
+						SourceQualifier sq=(SourceQualifier)transformation[i];
+						log_msg("   SQ Name" ,":   "+ sq.getTransformationName(),TAB_SPLIT);
+						log_msg("   SQ Naming Standards" ,":   "+ sq.getTransformationNameValidation(),TAB_SPLIT);
+						log_msg("   SQ PortName Standards",":   "+sq.getPortNameValidation(),TAB_SPLIT);
+						log_msg("   SQ Tracing Level" ,":   "+ sq.getTracingLevelValidation(),TAB_SPLIT);
+						log_msg("   SQ Source Override Query" ,":   "+ sq.getSourceSQLQueryValidation(),TAB_SPLIT);
+						log_msg("   SQ User Defined Join" ,":   "+ sq.getSourceUserDefinedJoinValidation(),TAB_SPLIT);
+						log_msg("   SQ Source Filter" ,":   "+ sq.getSourceFilterValidation(),TAB_SPLIT);
+						log_msg("   SQ Sorted Input" ,":   "+ sq.getSourceSortedInputValidation(),TAB_SPLIT);
+						log_msg("   SQ Distinct Option" ,":   "+ sq.getSourceIsDistinctValidation(),TAB_SPLIT);
+						log_msg("   SQ Partionable Option" ,":   "+ sq.getSourceIsPartionableValidation(),TAB_SPLIT);
+						log_msg("   SQ PRE SQL" ,":   "+ sq.getSourcePRESQLValidation(),TAB_SPLIT);
+						log_msg("   SQ POST SQL" ,":   "+ sq.getSourcePOSTSQLValidation(),TAB_SPLIT);
 				}
 				log_msg("");
 			}

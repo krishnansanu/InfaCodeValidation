@@ -30,7 +30,7 @@ public class Aggregator extends Transformation{
 
 	public boolean validateTransforamtionName(Map<String, String> validationList, int i) {
 		this.transformationName=map.get("TRANSFORMATION.NAME");
-		return super.validateTransforamtionName(transformationName, validationList, i,"AGG_");
+		return super.validateTransforamtionName(transformationName, validationList, i,4,"AGG_");
 		
 	}
 	

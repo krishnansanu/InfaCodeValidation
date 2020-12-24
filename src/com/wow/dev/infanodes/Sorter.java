@@ -8,8 +8,6 @@ public class Sorter extends Transformation{
 	private String transformationName;
 	private String tracingLevel;
 	private String cacheDirectory;
-	private String cacheSize;
-	private String isDistinctInput;
 	
 	private String transformationNameValidation;
 	private String tracingLevelValidation;
@@ -26,7 +24,7 @@ public class Sorter extends Transformation{
 	
 	public boolean validateTransforamtionName(Map<String, String> validationList, int i) {
 		this.transformationName=map.get("TRANSFORMATION.NAME");
-		return super.validateTransforamtionName(transformationName, validationList, i,"SRT_");
+		return super.validateTransforamtionName(transformationName, validationList, i,4,"SRT_");
 	}
 	
 	public boolean validatePortName(Map<String, String> validationList, int i) {

@@ -9,7 +9,7 @@ public class Mapping{
 	private Map<String, String> map;
 	private String mappingName;
 	private String isValid;
-	private String folderName;
+//	private String folderName;
 	
 	private int mappingVariableCount;
 	private int transformationCount;
@@ -24,7 +24,7 @@ public class Mapping{
 	
 	public Mapping(Map<String, String> map,String folderName) {
 		this.map=map;
-		this.folderName=folderName;
+//		this.folderName=folderName;
 	}
 	
 	

@@ -1,7 +1,6 @@
 package com.wow.dev.infanodes;
 
 import java.util.Map;
-import java.util.Set;
 
 public class Lookup extends Transformation{
 
@@ -9,14 +8,8 @@ public class Lookup extends Transformation{
 	private String transformationName;
 //	private String isCacheEnabled;
 	private String lookupSQLOverride;
-	private String lookupPolicyOnMultipleMatch;
 	private String tracingLevel;
 	private String lookupCacheDirectory;
-	private String isPersistantCache;
-	private String dataCacheSize;
-	private String indexCacheSize;
-	private String isDynamicLookup;
-	private String isSoretedInput;
 	private String lookupCondition;
 	
 	private String transformationNameValidation;
@@ -41,7 +34,7 @@ public class Lookup extends Transformation{
 	
 	public boolean validateTransforamtionName(Map<String, String> validationList, int i) {
 		this.transformationName=map.get("TRANSFORMATION.NAME");
-		return super.validateTransforamtionName(transformationName, validationList, i,"LKP_");
+		return super.validateTransforamtionName(transformationName, validationList, i,4,"LKP_");
 		
 	}
 	
