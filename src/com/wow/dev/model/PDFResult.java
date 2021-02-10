@@ -21,14 +21,18 @@ import com.wow.dev.controller.OnPremValidation;
 import com.wow.dev.infanodes.Aggregator;
 import com.wow.dev.infanodes.Expression;
 import com.wow.dev.infanodes.Filter;
+import com.wow.dev.infanodes.CustomTransformation;
 import com.wow.dev.infanodes.Joiner;
 import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
+import com.wow.dev.infanodes.Normalizer;
 import com.wow.dev.infanodes.SequenceGen;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.Sorter;
 import com.wow.dev.infanodes.SourceQualifier;
+import com.wow.dev.infanodes.StoredProcedure;
 import com.wow.dev.infanodes.Target;
+import com.wow.dev.infanodes.TransactionControl;
 import com.wow.dev.infanodes.Transformation;
 import com.wow.dev.infanodes.UpdateStrategy;
 import com.wow.dev.infanodes.Workflow;
@@ -279,6 +283,40 @@ public class PDFResult {
 						log_msg("   Joiner Master Sort Order" ,":   "+ jnr.getMasterSortOrder(),TAB_SPLIT);
 						log_msg("   Joiner Cache Directory Validation" ,":   "+ jnr.getCacheDirectoryValidation(),TAB_SPLIT);
 					break;
+					
+					case "Transaction Control":
+						TransactionControl tc=(TransactionControl)transformation[i];
+						log_msg("   Transaction Control Name" ,":   "+ tc.getTransformationName(),TAB_SPLIT);
+						log_msg("   Transaction Control Naming Standards" ,":   "+ tc.getTransformationNameValidation(),TAB_SPLIT);
+						log_msg("   Transaction Control Tracing Level" ,":   "+ tc.getTracingLevelValidation(),TAB_SPLIT);
+						log_msg("   Transaction Control Condition Validation" ,":   "+ tc.getFilterConditionValidation(),TAB_SPLIT);
+					break;
+					
+					case "Custom Transformation":
+						CustomTransformation ct=(CustomTransformation)transformation[i];
+						log_msg("   Transformation Type" ,":   "+ ct.getTemplateName(),TAB_SPLIT);
+						log_msg("   Transformation Name" ,":   "+ ct.getTransformationName(),TAB_SPLIT);
+						log_msg("   Transformation Tracing Level" ,":   "+ ct.getTracingLevelValidation(),TAB_SPLIT);
+						log_msg("   Transformation Port Name Standards" ,":   "+ ct.getPortnameValidation(),TAB_SPLIT);
+					break;
+					
+					case "Stored Procedure":
+						StoredProcedure sp=(StoredProcedure)transformation[i];
+						log_msg("   Stored Procedure Name" ,":   "+ sp.getStoredProcedureName(),TAB_SPLIT);
+						log_msg("   Transformation Name" ,":   "+ sp.getTransformationName(),TAB_SPLIT);
+						log_msg("   Stored Procedure Connection Name" ,":   "+ sp.getConnectionInformationName(),TAB_SPLIT);
+						log_msg("   Stored Procedure call Text" ,":   "+ sp.getStoredProcedureCallText(),TAB_SPLIT);
+						log_msg("   Stored Procedure Type" ,":   "+ sp.getStoredProcedureType(),TAB_SPLIT);
+						log_msg("   Stored Procedure Tracing Level" ,":   "+ sp.getTracingLevelValidation(),TAB_SPLIT);
+					break;
+					
+					case "Normalizer":
+						Normalizer nrm=(Normalizer)transformation[i];
+						log_msg("   Normalizer Transformation Name" ,":   "+ nrm.getTransformationName(),TAB_SPLIT);
+						log_msg("   Normalizer Tracing Level" ,":   "+ nrm.getTracingLevelValidation(),TAB_SPLIT);
+					break;
+					
+					
 				}
 				log_msg("");
 			}

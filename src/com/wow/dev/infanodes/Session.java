@@ -81,10 +81,8 @@ public class Session{
 	
 	public boolean validateSessionLogDirectory(Map<String,String> validationList, int i) {
 		sessionLogDirectory=map.get("SESSION_ATTRIBUTE.Session Log File directory");
-		sessionLogDirectory=sessionLogDirectory.replace("$PMSessionLogDir", "/infadata/Logs");
-		System.out.println("Validating Sessin Log Directory. [Session Log Directory=" + sessionLogDirectory + "]");
-		if(!sessionLogDirectory.equals("/infadata/Logs/" + folderName + "/SessLogs/")) {
-			validationList.put(i+"_SESSION_ATTRIBUTE.Session Log File directory","Session [" + map.get("SESSION.NAME") + "] Logs are not pointing to Project Folder. Session Logs should be written under /infadata/Logs/" + folderName + "/SessLogs/");
+		if(!sessionLogDirectory.contains("/"+folderName)) {
+			validationList.put(i+"_SESSION_ATTRIBUTE.Session Log File directory","Session [" + map.get("SESSION.NAME") + "] Log directory ["+sessionLogDirectory+"] is invalid");
 			return false;
 		}
 		return true;

@@ -24,7 +24,7 @@ public class Sorter extends Transformation{
 	
 	public boolean validateTransforamtionName(Map<String, String> validationList, int i) {
 		this.transformationName=map.get("TRANSFORMATION.NAME");
-		return super.validateTransforamtionName(transformationName, validationList, i,4,"SRT_");
+		return super.validateTransforamtionName(transformationName, validationList, i,3,"SRT");
 	}
 	
 	public boolean validatePortName(Map<String, String> validationList, int i) {
@@ -37,12 +37,10 @@ public class Sorter extends Transformation{
 	}
 	
 	public boolean validateCacheDirectoryName(Map<String,String> validationList,int i) {
-		System.out.println("Validating Aggregator Cache Directory Name...");
+
 		cacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Work Directory");
-		cacheDirectory.replace("$PMCacheDir","/infadata/Cache/");
-		cacheDirectory.replace("$PMTempDir","/infadata/Cache/");
-		if(!(cacheDirectory.equals("/infadata/Cache/"+folderName) || cacheDirectory.equals("/infadata/Cache/"+folderName+"/"))) {
-			validationList.put(i+"_"+transformationName+"Sorter Cache directory name","Sorter ["+transformationName+"] Cache directory should be pointing to /infadata/Cache/"+folderName);
+		if(!(cacheDirectory.contains("/"+folderName))) {
+			validationList.put(i+"_"+transformationName+"Sorter Cache directory name","Sorter ["+transformationName+"] Cache directory ["+cacheDirectory+"] is invalid");
 			return false;
 		}
 		return true;

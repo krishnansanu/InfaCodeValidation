@@ -80,10 +80,8 @@ public class Workflow{
 	
 	public boolean validateWorkflowLogDirectory(Map<String,String> validationList,int i) {
 		String logDirectory=map.get("WORKFLOW_ATTRIBUTE.Workflow Log File Directory");
-		logDirectory=logDirectory.replace("$PMWorkflowLogDir", "/infadata/Logs");
-		System.out.println("Validating workflow log directory. [workflow log directory=" + logDirectory + "]");
-		if(!logDirectory.equals("/infadata/Logs/" + folderName + "/WkfLogs/")) {
-			validationList.put(i+"_WORKFLOW_ATTRIBUTE.Workflow Log File Directory", "Workflow [" + map.get("WORKFLOW.NAME") + "] Logs are not pointing to Project Folder. Workflow Logs should be written under /infadata/Logs/" + folderName + "/WkfLogs/");
+		if(!logDirectory.contains("/"+folderName)) {
+			validationList.put(i+"_WORKFLOW_ATTRIBUTE.Workflow Log File Directory", "Workflow [" + map.get("WORKFLOW.NAME") + "] Log directory ["+ logDirectory +"]is invalid.  ");
 			return false;
 		}
 		return true;

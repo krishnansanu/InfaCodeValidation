@@ -2,21 +2,20 @@ package com.wow.dev.infanodes;
 
 import java.util.Map;
 
-public class UpdateStrategy extends Transformation{
+public class TransactionControl extends Transformation{
 	
 	private String transformationName;
 	private String transformationNameValidation;
 	private String tracingLevelValidation;
-	private String updateStrategyExpressionValidation;
+	private String filterConditionValidation;
 	
-
-	public UpdateStrategy(Map<String, String> map, String transformationType) {
-		super(map,transformationType);
+	public TransactionControl(Map<String, String> map, String transformationType) {
+		super(map, transformationType);
 	}
-	
+
 	public boolean validateTransforamtionName(Map<String, String> validationList, int i) {
 		this.transformationName=map.get("TRANSFORMATION.NAME");
-		return super.validateTransforamtionName(transformationName, validationList, i,3,"UPD");
+		return super.validateTransforamtionName(transformationName, validationList, i,2,"TC");
 		
 	}
 	
@@ -26,10 +25,10 @@ public class UpdateStrategy extends Transformation{
 		
 	}
 	
-	public boolean validateUpdateStrageyExpression(Map<String, String> validationList, int i) {
-		String updateStrategyExpression=map.get("TRANSFORMATION_TABLEATTRIBUTE.Update Strategy Expression");
+	public boolean validateFilterConditionExpression(Map<String, String> validationList, int i) {
+		String updateStrategyExpression=map.get("TRANSFORMATION_TABLEATTRIBUTE.Transaction Control Condition");
 		if (updateStrategyExpression.isEmpty()) {
-			validationList.put(i+"_"+transformationName+"Update Strategy Expression Condition Check","Update Strategy ["+transformationName+"]  Expression Condition is empty");
+			validationList.put(i+"_"+transformationName+"Transaction Control Condition Check","Transaction Control ["+transformationName+"] Condition is empty");
 			return false;
 		}else {
 			return true;
@@ -40,10 +39,8 @@ public class UpdateStrategy extends Transformation{
 	public void validate(Map<String, String> validationList, int i) {
 		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		updateStrategyExpressionValidation=validateUpdateStrageyExpression(validationList,i)?"PASS":"FAIL";
-		
+		filterConditionValidation=validateFilterConditionExpression(validationList,i)?"PASS":"FAIL";
 	}
-	
 
 	public String getTransformationName() {
 		return transformationName;
@@ -57,10 +54,12 @@ public class UpdateStrategy extends Transformation{
 		return tracingLevelValidation;
 	}
 
-	public String getUpdateStrategyExpressionValidation() {
-		return updateStrategyExpressionValidation;
+	public String getFilterConditionValidation() {
+		return filterConditionValidation;
 	}
 	
 	
+	
+
 
 }

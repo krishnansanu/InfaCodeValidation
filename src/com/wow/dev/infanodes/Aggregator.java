@@ -30,7 +30,7 @@ public class Aggregator extends Transformation{
 
 	public boolean validateTransforamtionName(Map<String, String> validationList, int i) {
 		this.transformationName=map.get("TRANSFORMATION.NAME");
-		return super.validateTransforamtionName(transformationName, validationList, i,4,"AGG_");
+		return super.validateTransforamtionName(transformationName, validationList, i,3,"AGG");
 	}
 	
 	public boolean validatetracingLevel(Map<String, String> validationList, int i) {
@@ -43,11 +43,9 @@ public class Aggregator extends Transformation{
 	}
 	
 	public boolean validateLookupCacheDirectoryName(Map<String,String> validationList,int i) {
-		System.out.println("Validating Aggregator Cache Directory Name...");
 		cacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Cache Directory");
-		cacheDirectory.replace("$PMCacheDir","/infadata/Cache/");
-		if(!(cacheDirectory.equals("/infadata/Cache/"+folderName) || cacheDirectory.equals("/infadata/Cache/"+folderName+"/"))) {
-			validationList.put(i+"_"+transformationName+"Aggregator Cache directory name","Aggregator ["+transformationName+"] Cache directory should be pointing to /infadata/Cache/"+folderName);
+		if(!(cacheDirectory.contains("/"+folderName))) {
+			validationList.put(i+"_"+transformationName+"Aggregator Cache directory name","Aggregator ["+transformationName+"] Cache directory ["+cacheDirectory+"]is invalid");
 			return false;
 		}
 		return true;

@@ -27,7 +27,6 @@ public abstract class Transformation {
 	
 	
 	public boolean validateTransforamtionName(String transformationName,Map<String, String> validationList, int i,int endIndex, String prefixValue) {
-		System.out.println("Validating TRANSFORMATION NAME... [TRANSFORMATION.NAME="+transformationName+"]");
 		if(!transformationName.substring(0, endIndex).equalsIgnoreCase(prefixValue)) {
 			validationList.put(i+"_TRANSFORMATION.NAME","Invalid Start of "+transformationType+" Name [" + transformationName + "]. "+transformationType+" Name Should Start with '"+prefixValue+"'");
 			return false;
@@ -38,7 +37,6 @@ public abstract class Transformation {
 	}
 	
 	public boolean validatetracingLevel(String tracingLevel,String transformationName,Map<String, String> validationList, int i) {
-		System.out.println("Validating TRANSFORMATION_TABLEATTRIBUTE.Tracing Level... [TRANSFORMATION_TABLEATTRIBUTE.Tracing Level="+tracingLevel+"]");
 		if(!tracingLevel.equalsIgnoreCase("Normal")) {
 			validationList.put(i+"_TRANSFORMATION_TABLEATTRIBUTE.Tracing Level","Transofrmation [" + transformationName + "] tracing level should be Normal");
 			return false;
@@ -70,7 +68,6 @@ public abstract class Transformation {
 			}
 			
 			if(PORTTYPE!=null && PORTNAME!=null) {
-				System.out.println("Validating EXPRESSION FIELD NAME... [FIELD NAME="+PORTNAME+"]");
 				
 				if(PORTTYPE.equals("INTPUT")) {
 					

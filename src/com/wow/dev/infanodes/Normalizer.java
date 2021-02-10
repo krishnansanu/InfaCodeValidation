@@ -2,21 +2,17 @@ package com.wow.dev.infanodes;
 
 import java.util.Map;
 
-public class SequenceGen extends Transformation{
+public class Normalizer extends Transformation{
 	
 	private String transformationName;
-	private String transformationNameValidation;
 	private String tracingLevelValidation;
 	
-
-	public SequenceGen(Map<String, String> map, String transformationType) {
+	public Normalizer(Map<String, String> map, String transformationType) {
 		super(map, transformationType);
 	}
 
-	public boolean validateTransforamtionName(Map<String, String> validationList, int i) {
-		this.transformationName=map.get("TRANSFORMATION.NAME");
-		return super.validateTransforamtionName(transformationName, validationList, i,3,"SEQ");
-		
+	public String extractTransformationName() {
+		return map.get("TRANSFORMATION.NAME");
 	}
 	
 	public boolean validatetracingLevel(Map<String, String> validationList, int i) {
@@ -27,7 +23,7 @@ public class SequenceGen extends Transformation{
 	
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationName=extractTransformationName();
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 	}
 
@@ -35,14 +31,7 @@ public class SequenceGen extends Transformation{
 		return transformationName;
 	}
 
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
 	public String getTracingLevelValidation() {
 		return tracingLevelValidation;
 	}
-	
-	
-
 }

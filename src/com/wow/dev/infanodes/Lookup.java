@@ -34,7 +34,7 @@ public class Lookup extends Transformation{
 	
 	public boolean validateTransforamtionName(Map<String, String> validationList, int i) {
 		this.transformationName=map.get("TRANSFORMATION.NAME");
-		return super.validateTransforamtionName(transformationName, validationList, i,4,"LKP_");
+		return super.validateTransforamtionName(transformationName, validationList, i,3,"LKP");
 		
 	}
 	
@@ -70,11 +70,9 @@ public class Lookup extends Transformation{
 	}
 	
 	public boolean validateLookupCacheDirectoryName(Map<String,String> validationList,int i) {
-		System.out.println("Validating Lookup Cache Directory Name...");
 		lookupCacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup cache directory name");
-		lookupCacheDirectory.replace("$PMCacheDir","/infadata/Cache/");
-		if(!(lookupCacheDirectory.equals("/infadata/Cache/"+folderName) || lookupCacheDirectory.equals("/infadata/Cache/"+folderName+"/"))) {
-			validationList.put(i+"_"+transformationName+"LOOKUP Cache directory name","Lookup ["+transformationName+"] Cache directory should be pointing to /infadata/Cache/"+folderName);
+		if(!(lookupCacheDirectory.contains("/"+folderName))) {
+			validationList.put(i+"_"+transformationName+"LOOKUP Cache directory name","Lookup ["+transformationName+"] Cache directory ["+lookupCacheDirectory+"] is invalid");
 			return false;
 		}
 		return true;

@@ -5,15 +5,19 @@ import java.util.Map;
 import com.wow.dev.infanodes.Aggregator;
 import com.wow.dev.infanodes.Expression;
 import com.wow.dev.infanodes.Filter;
+import com.wow.dev.infanodes.CustomTransformation;
 import com.wow.dev.infanodes.Joiner;
 import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
+import com.wow.dev.infanodes.Normalizer;
 import com.wow.dev.infanodes.SequenceGen;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.SessionTaskInstance;
 import com.wow.dev.infanodes.Sorter;
 import com.wow.dev.infanodes.SourceQualifier;
+import com.wow.dev.infanodes.StoredProcedure;
 import com.wow.dev.infanodes.Target;
+import com.wow.dev.infanodes.TransactionControl;
 import com.wow.dev.infanodes.Transformation;
 import com.wow.dev.infanodes.UpdateStrategy;
 import com.wow.dev.infanodes.Workflow;
@@ -91,6 +95,10 @@ public class OnPremValidation {
 				case "Sequence":transformations[i]=new SequenceGen(trans,"Sequence");break;
 				case "Filter":transformations[i]=new Filter(trans,"Filter");break;
 				case "Joiner":transformations[i]=new Joiner(trans,"Joiner",folderName);break;
+				case "Transaction Control":transformations[i]=new TransactionControl(trans,"Transaction Control");break;
+				case "Custom Transformation":transformations[i]=new CustomTransformation(trans,"Custom Transformation");break;
+				case "Stored Procedure":transformations[i]=new StoredProcedure(trans,"Stored Procedure");break;
+				case "Normalizer":transformations[i]=new Normalizer(trans,"Normalizer");break;
 			}
 			
 			if(transformations[i]!=null) transformations[i].validate(validationList, i);
