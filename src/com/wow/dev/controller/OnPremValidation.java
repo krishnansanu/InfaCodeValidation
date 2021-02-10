@@ -4,13 +4,18 @@ import java.util.Map;
 
 import com.wow.dev.infanodes.Aggregator;
 import com.wow.dev.infanodes.Expression;
+import com.wow.dev.infanodes.Filter;
+import com.wow.dev.infanodes.Joiner;
 import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
+import com.wow.dev.infanodes.SequenceGen;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.SessionTaskInstance;
 import com.wow.dev.infanodes.Sorter;
 import com.wow.dev.infanodes.SourceQualifier;
+import com.wow.dev.infanodes.Target;
 import com.wow.dev.infanodes.Transformation;
+import com.wow.dev.infanodes.UpdateStrategy;
 import com.wow.dev.infanodes.Workflow;
 
 public class OnPremValidation {
@@ -19,6 +24,7 @@ public class OnPremValidation {
 	private Session[] sessions;
 	private SessionTaskInstance[] taskInstances;
 	private Mapping mappings[];
+	private Target targets[];
 	private Transformation[] transformations;
 	private Map<String,String> validationList;
 	private String repositoryName;
@@ -81,9 +87,23 @@ public class OnPremValidation {
 				case "Aggregator": transformations[i]=new Aggregator(trans,"Aggregator",folderName);break;
 				case "Sorter": transformations[i]=new Sorter(trans,"Sorter",folderName);break;
 				case "Source Qualifier": transformations[i]=new SourceQualifier(trans,"Source Qualifier");break;
+				case "Update Strategy":transformations[i]=new UpdateStrategy(trans,"Update Strategy");break;
+				case "Sequence":transformations[i]=new SequenceGen(trans,"Sequence");break;
+				case "Filter":transformations[i]=new Filter(trans,"Filter");break;
+				case "Joiner":transformations[i]=new Joiner(trans,"Joiner",folderName);break;
 			}
 			
 			if(transformations[i]!=null) transformations[i].validate(validationList, i);
+		}
+		
+		
+		Map<String, String> instanceObject[]=xmlDetails.extractDetailsToMap("INSTANCE");
+		
+		Map<String, String> targetObject[]=xmlDetails.extractDetailsToMap("TARGET");
+		targets=new Target[targetObject.length];
+		for(int i=0;i<targets.length;i++) {
+			targets[i]=new Target(targetObject[i], folderName,instanceObject);
+			targets[i].validate(validationList,i);
 		}
 		
 	}
@@ -98,6 +118,10 @@ public class OnPremValidation {
 
 	public Mapping[] getMappings() {
 		return mappings;
+	}
+	
+	public Target[] getTargets() {
+		return targets;
 	}
 	
 	public Transformation[] getTransformation() {

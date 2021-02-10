@@ -1,15 +1,11 @@
 package com.wow.dev.model;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
 
-import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -24,12 +20,17 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.wow.dev.controller.OnPremValidation;
 import com.wow.dev.infanodes.Aggregator;
 import com.wow.dev.infanodes.Expression;
+import com.wow.dev.infanodes.Filter;
+import com.wow.dev.infanodes.Joiner;
 import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
+import com.wow.dev.infanodes.SequenceGen;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.Sorter;
 import com.wow.dev.infanodes.SourceQualifier;
+import com.wow.dev.infanodes.Target;
 import com.wow.dev.infanodes.Transformation;
+import com.wow.dev.infanodes.UpdateStrategy;
 import com.wow.dev.infanodes.Workflow;
 
 public class PDFResult {
@@ -94,6 +95,7 @@ public class PDFResult {
 		Session sessions[]=opv.getSessions();
 		Mapping mappings[]=opv.getMappings();
 		Transformation transformation[]=opv.getTransformation();
+		Target targets[]=opv.getTargets();
 		
 		log_msg("");
 		setFontAttribute(font, 11, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
@@ -239,12 +241,58 @@ public class PDFResult {
 						log_msg("   SQ Partionable Option" ,":   "+ sq.getSourceIsPartionableValidation(),TAB_SPLIT);
 						log_msg("   SQ PRE SQL" ,":   "+ sq.getSourcePRESQLValidation(),TAB_SPLIT);
 						log_msg("   SQ POST SQL" ,":   "+ sq.getSourcePOSTSQLValidation(),TAB_SPLIT);
+					break;
+						
+					case "Update Strategy":
+						UpdateStrategy upd=(UpdateStrategy)transformation[i];
+						log_msg("   Update Strategy Name" ,":   "+ upd.getTransformationName(),TAB_SPLIT);
+						log_msg("   Update Strategy Naming Standards" ,":   "+ upd.getTransformationNameValidation(),TAB_SPLIT);
+						log_msg("   Update Strategy Tracing Level" ,":   "+ upd.getTracingLevelValidation(),TAB_SPLIT);
+						log_msg("   Update Strategy Expression Validation" ,":   "+ upd.getUpdateStrategyExpressionValidation(),TAB_SPLIT);
+					break;
+					
+					case "Sequence":
+						SequenceGen seq=(SequenceGen)transformation[i];
+						log_msg("   Sequence Generater Name" ,":   "+ seq.getTransformationName(),TAB_SPLIT);
+						log_msg("   Sequence Generater Naming Standards" ,":   "+ seq.getTransformationNameValidation(),TAB_SPLIT);
+						log_msg("   Sequence Generater Tracing Level" ,":   "+ seq.getTracingLevelValidation(),TAB_SPLIT);
+					break;
+					
+					case "Filter":
+						Filter fil=(Filter)transformation[i];
+						log_msg("   Filter Name" ,":   "+ fil.getTransformationName(),TAB_SPLIT);
+						log_msg("   Filter Naming Standards" ,":   "+ fil.getTransformationNameValidation(),TAB_SPLIT);
+						log_msg("   Filter Tracing Level" ,":   "+ fil.getTracingLevelValidation(),TAB_SPLIT);
+						log_msg("   Filter Condition Validation" ,":   "+ fil.getFilterConditionValidation(),TAB_SPLIT);
+					break;
+					
+					case "Joiner":
+						Joiner jnr=(Joiner)transformation[i];
+						log_msg("   Joiner Name" ,":   "+ jnr.getTransformationName(),TAB_SPLIT);
+						log_msg("   Joiner Naming Standards" ,":   "+ jnr.getTransformationNameValidation(),TAB_SPLIT);
+						log_msg("   Joiner Tracing Level" ,":   "+ jnr.getTracingLevelValidation(),TAB_SPLIT);
+						log_msg("   Joiner Condition Validation" ,":   "+ jnr.getJoinConditionValidation(),TAB_SPLIT);
+						log_msg("   Joiner Type" ,":   "+ jnr.getJoinType(),TAB_SPLIT);
+						log_msg("   Joiner Data Cahce Size" ,":   "+ jnr.getDataCacheSize(),TAB_SPLIT);
+						log_msg("   Joiner Index Cache Size" ,":   "+ jnr.getIndexCacheSize(),TAB_SPLIT);
+						log_msg("   Joiner Is Input Sorted?" ,":   "+ jnr.getIsSortedInputs(),TAB_SPLIT);
+						log_msg("   Joiner Master Sort Order" ,":   "+ jnr.getMasterSortOrder(),TAB_SPLIT);
+						log_msg("   Joiner Cache Directory Validation" ,":   "+ jnr.getCacheDirectoryValidation(),TAB_SPLIT);
+					break;
 				}
 				log_msg("");
 			}
 		}
 		
-		
+		for(int i=0;i<targets.length;i++) {
+			Target target=targets[i];
+			log_msg("   Target Name" ,":   "+ target.getTransformationName(),TAB_SPLIT);
+			log_msg("   Target Type" ,":   "+ target.getTargetType(),TAB_SPLIT);
+			log_msg("   Target Update Override Validation" , ":   "+target.getUpdateOverrideValidation(),TAB_SPLIT);
+			log_msg("   Target PRE SQL Validation",":   "+target.getPreSQLValidation(),TAB_SPLIT);
+			log_msg("   Target POST SQL Validation",":   "+target.getPostSQLValidation(),TAB_SPLIT);
+			log_msg("");
+		}
 		
 		
 		setFontAttribute(font, 11, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
