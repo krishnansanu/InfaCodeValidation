@@ -28,6 +28,7 @@ public class SequenceGen extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		super.trace(transformationType, transformationName);
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 	}
 

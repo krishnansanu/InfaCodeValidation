@@ -4,17 +4,9 @@ import java.util.Map;
 
 public class Workflow{
 	
-	// Workflow Properties Attributes
 	private Map<String, String> map;
 	private String workflowName;
-	private String isValid;
-	private String integrationService;
-	private String WORKFLOW_BACKWARD_COMPATIBLE;
-	private String logName;
-	private String logDirectory;
 	private String folderName;
-	
-	// Workflow Validation Attributes
 	private String workflowNameValidation;
 	private String workflowIsValidValidation;
 	private String workflowIntegrationServiceValidation;
@@ -39,7 +31,7 @@ public class Workflow{
 	}
 	
 	public boolean isWorkflowValid(Map<String,String> validationList,int i) {
-		isValid=map.get("WORKFLOW.ISVALID");
+		String isValid=map.get("WORKFLOW.ISVALID");
 		System.out.println("Validating Workflow isValid Option. [isValid=" + isValid + "]");
 		if(!isValid.equals("YES")) {
 			validationList.put(i+"_WORKFLOW.ISVALID","Workflow [" + map.get("WORKFLOW.NAME") + "] is not valid. Please validate the Workflow to find out the issue");
@@ -49,7 +41,7 @@ public class Workflow{
 	}
 	
 	public boolean validateIntegrationService(Map<String,String> validationList,int i) {
-		integrationService=map.get("WORKFLOW.SERVERNAME");
+		String integrationService=map.get("WORKFLOW.SERVERNAME");
 		if(integrationService.contains("IS_ENT")) {
 			validationList.put(i+"_WORKFLOW.INTEGRATIONSERVERNAME","Workflow [" + map.get("WORKFLOW.NAME") + "] Integration is selected as IS_ENT* Please Verify if there is a special requirement to run the workflow in ENT Integration Service");
 			return false;
@@ -59,7 +51,7 @@ public class Workflow{
 	
 	
 	public boolean validateWorkflowBackwardCompatible(Map<String,String> validationList,int i) {
-		WORKFLOW_BACKWARD_COMPATIBLE=map.get("WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File");
+		String WORKFLOW_BACKWARD_COMPATIBLE=map.get("WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File");
 		System.out.println("Validating Workflow Backward Compatible Option. [Backward Compatible=" + WORKFLOW_BACKWARD_COMPATIBLE + "]");
 		if(!WORKFLOW_BACKWARD_COMPATIBLE.equals("YES")) {
 			validationList.put(i+"_WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File","Backward Compatible is not enabled in the Workflow - [" + map.get("WORKFLOW.NAME") + "]");
@@ -69,7 +61,7 @@ public class Workflow{
 	}
 	
 	public boolean validateWorkflowLog(Map<String,String> validationList,int i) {
-		logName=map.get("WORKFLOW_ATTRIBUTE.Workflow Log File Name");
+		String logName=map.get("WORKFLOW_ATTRIBUTE.Workflow Log File Name");
 		System.out.println("Validating Workflow log Name. [Workflow Log Name=" + logName + "]");
 		if(!logName.equals(map.get("WORKFLOW.NAME")+".log")) {
 			validationList.put(i+"_WORKFLOW_ATTRIBUTE.Workflow Log File Name","Workflow log name should be same as Workflow name [" + map.get("Workflow.NAME") + "].");
@@ -89,6 +81,7 @@ public class Workflow{
 	
 	public void validate(Map<String,String> validationList,int i) {
 		workflowNameValidation=validateWorkflowName(validationList,i)?"PASS":"FAIL";
+		System.out.println("Validating Workflow - " + workflowName);
 		workflowIsValidValidation=isWorkflowValid(validationList,i)?"PASS":"FAIL";
 		workflowIntegrationServiceValidation=validateIntegrationService(validationList,i)?"PASS":"WARNING";
 		WORKFLOW_BACKWARD_COMPATIBLEValidaiton=validateWorkflowBackwardCompatible(validationList,i)?"PASS":"FAIL";
@@ -102,26 +95,6 @@ public class Workflow{
 
 	public String getWorkflowName() {
 		return workflowName;
-	}
-
-	public String getIsValid() {
-		return isValid;
-	}
-
-	public String getIntegrationService() {
-		return integrationService;
-	}
-
-	public String getWORKFLOW_BACKWARD_COMPATIBLE() {
-		return WORKFLOW_BACKWARD_COMPATIBLE;
-	}
-
-	public String getLogName() {
-		return logName;
-	}
-
-	public String getLogDirectory() {
-		return logDirectory;
 	}
 
 	public String getWorkflowNameValidation() {
@@ -147,9 +120,5 @@ public class Workflow{
 	public String getWorkflowlogDirectoryValidation() {
 		return workflowlogDirectoryValidation;
 	}
-	
-	
-	
-	
 	
 }

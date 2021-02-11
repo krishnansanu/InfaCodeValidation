@@ -197,6 +197,7 @@ public class PDFResult {
 						log_msg("   Lookup Name" ,":   "+ lkp.getTransformationName(),TAB_SPLIT);
 						log_msg("   Lookup Naming Standards" ,":   "+ lkp.getTransformationNameValidation(),TAB_SPLIT);
 						log_msg("   Lookup PortName Standards" ,":   "+ lkp.getPortNameValidation(),TAB_SPLIT);
+						log_msg("   Lookup Override Query" ,":   "+ lkp.getLookupSQLOverrideValidation(),TAB_SPLIT);
 						log_msg("   Is Lookup Cache Enabled" ,":   "+ lkp.getIsCacheEnabledValidation(),TAB_SPLIT);
 						log_msg("   Lookup Policy on multiple match" ,":   "+ lkp.getLookupPolicyOnMultipleMatchValidation(),TAB_SPLIT);
 						log_msg("   Lookup Tracing Level" ,":   "+ lkp.getTracingLevelValidation(),TAB_SPLIT);
@@ -218,6 +219,7 @@ public class PDFResult {
 						log_msg("   Aggregator Data Cache Size" ,":   "+ agg.getDataCacheSizeValidation(),TAB_SPLIT);
 						log_msg("   Aggregator Index Cache Size" ,":   "+ agg.getIndexCacheSizeValidation(),TAB_SPLIT);
 						log_msg("   Aggregator Tracing Level" ,":   "+ agg.getTracingLevelValidation(),TAB_SPLIT);
+						log_msg("   Aggregator Cache Directory Validation" ,":   "+ agg.getCacheDirectoryValidation(),TAB_SPLIT);
 					break;
 					
 					case "Sorter":

@@ -76,6 +76,7 @@ public class Joiner extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		super.trace(transformationType, transformationName);
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 		joinConditionValidation=validateFilterConditionExpression(validationList,i)?"PASS":"FAIL";
 		joinType=extractJoinType();
@@ -126,7 +127,4 @@ public class Joiner extends Transformation{
 		return cacheDirectoryValidation;
 	}
 	
-	
-
-
 }

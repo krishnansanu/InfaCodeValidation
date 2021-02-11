@@ -5,32 +5,24 @@ import java.util.Set;
 
 public class Mapping{
 	
-	// Mapping Properties Attribute
 	private Map<String, String> map;
 	private String mappingName;
-	private String isValid;
-//	private String folderName;
-	
-	private int mappingVariableCount;
-	private int transformationCount;
-	private String mappingVariablesList;
-	private String transformationList;
-	
-	// Mapping Validation Attribute
 	private String mappingNameValidation;
 	private String mappingIsValidValidation;
+	private int transformationCount;
+	private String transformationList;
+	private int mappingVariableCount;
 	private String mappingVariableNameValidation;
 	private String mappingSQLQueryValidation;
 	
+	
 	public Mapping(Map<String, String> map,String folderName) {
 		this.map=map;
-//		this.folderName=folderName;
 	}
 	
 	
 	public boolean  validateMappingName(Map<String,String> validationList,int i) {
-		mappingName=map.get("MAPPING.NAME");
-		System.out.println("Validating Mapping Name...[Mapping Name="+mappingName+"]");
+		this.mappingName=map.get("MAPPING.NAME");
 		if(!mappingName.substring(0, 2).contentEquals("m_")) {
 			validationList.put(i+"_MAPPING.NAME","Invalid Start of Mapping Name [" + map.get("MAPPING.NAME") + "]. Mapping Name Should Start with 'm_'");
 			return false;
@@ -39,9 +31,7 @@ public class Mapping{
 	}
 	
 	public boolean isMappingvalid(Map<String,String> validationList,int i) {
-		isValid=map.get("MAPPING.ISVALID");
-		System.out.println("Validating if Mapping is valid... [Mapping IsValid=" + isValid + "] ");
-		
+		String isValid=map.get("MAPPING.ISVALID");
 		if(!isValid.equals("YES")) {
 			validationList.put(i+"_MAPPING.ISVALID","Mapping "+ map.get("MAPPING.NAME")  +" is not valid. Please Validate the mapping to fix the issues.");
 			return false;
@@ -51,11 +41,11 @@ public class Mapping{
 
 	
 	public boolean validateMappingVariableName(Map<String,String> validationList,int i) {
+		String mappingVariablesList=null;
 		Set<String> keys=map.keySet();
 		for(String key:keys) {
 			if(key.contains("MAPPINGVARIABLE.NAME")) {
 				mappingVariableCount++;
-				System.out.println("Validating MappingVariable Name... ["+ key +" = "+ map.get(key) + "] ");
 				String mappingVariableName=map.get(key);
 				
 				if (mappingVariablesList==null) {
@@ -78,7 +68,6 @@ public class Mapping{
 		Set<String> keys=map.keySet();
 		for(String key:keys) {
 			if(key.contains("Sql Query")) {
-				System.out.println("Validating MappingVariable SQL Overide Query... ["+ key +" ] ");
 				String sqlOverride=map.get(key);
 				
 				if(!sqlOverride.equals("")) {
@@ -106,21 +95,14 @@ public class Mapping{
 	
 	public void validate(Map<String,String> validationList,int i) {
 		mappingNameValidation=validateMappingName(validationList,i)?"PASS":"FAIL";
+		System.out.println("Validating Mapping - " + mappingName);
 		mappingIsValidValidation=isMappingvalid(validationList,i)?"PASS":"FAIL";
 		mappingVariableNameValidation=validateMappingVariableName(validationList,i)?"PASS":"FAIL";
 		mappingSQLQueryValidation=validateSQLQuery(validationList,i)?"PASS":"WARNING";
 		getTransformationDetails();
 	}
 	
-	public void mappingValidationResults() {
-		System.out.println(mappingName);
-		System.out.println("\tMapping Naming Standards\t\t\t: " + mappingNameValidation);
-		System.out.println("\tIs Mapping Valid\t\t\t\t: " + mappingIsValidValidation);
-		System.out.println("\tMapping  variables Standards\t\t\t: " + mappingVariableNameValidation);
-		System.out.println("\tMapping SQL Query Validation\t\t\t: " + mappingSQLQueryValidation);
-	}
-
-
+	
 	public Map<String, String> getMap() {
 		return map;
 	}
@@ -128,11 +110,6 @@ public class Mapping{
 
 	public String getMappingName() {
 		return mappingName;
-	}
-
-
-	public String getIsValid() {
-		return isValid;
 	}
 
 
@@ -163,11 +140,6 @@ public class Mapping{
 
 	public int getTransformationCount() {
 		return transformationCount;
-	}
-
-
-	public String getMappingVariablesList() {
-		return mappingVariablesList;
 	}
 
 

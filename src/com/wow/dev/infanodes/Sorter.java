@@ -6,9 +6,6 @@ public class Sorter extends Transformation{
 
 	private String folderName;
 	private String transformationName;
-	private String tracingLevel;
-	private String cacheDirectory;
-	
 	private String transformationNameValidation;
 	private String tracingLevelValidation;
 	private String portNameValidation;
@@ -32,13 +29,12 @@ public class Sorter extends Transformation{
 	}
 	
 	public String validateSorterCacheSize() {
-		System.out.println("Validating Sorter Cache Size...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Sorter Cache Size");
 	}
 	
 	public boolean validateCacheDirectoryName(Map<String,String> validationList,int i) {
 
-		cacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Work Directory");
+		String cacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Work Directory");
 		if(!(cacheDirectory.contains("/"+folderName))) {
 			validationList.put(i+"_"+transformationName+"Sorter Cache directory name","Sorter ["+transformationName+"] Cache directory ["+cacheDirectory+"] is invalid");
 			return false;
@@ -47,12 +43,11 @@ public class Sorter extends Transformation{
 	}
 	
 	public boolean validatetracingLevel(Map<String, String> validationList, int i) {
-		this.tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
+		String tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
 		return super.validatetracingLevel(tracingLevel, transformationName, validationList, i);
 	}
 	
 	public String validateIsDistinctInput() {
-		System.out.println("Validating If Sorter distinct option is enabled...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Distinct");
 	}
 
@@ -60,6 +55,7 @@ public class Sorter extends Transformation{
 	public void validate(Map<String, String> validationList, int i) {
 		// TODO Auto-generated method stub
 		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		super.trace(transformationType, transformationName);
 		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
 		cacheSizeValidation=validateSorterCacheSize();
 		cacheDirectoryValidation=validateCacheDirectoryName(validationList,i)?"PASS":"FAIL";

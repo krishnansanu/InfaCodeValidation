@@ -5,9 +5,6 @@ import java.util.Map;
 public class SourceQualifier extends Transformation{
 	
 	private String transformationName;
-	private String tracingLevel;
-	
-	
 	private String transformationNameValidation;
 	private String tracingLevelValidation;
 	private String portNameValidation;
@@ -32,7 +29,7 @@ public class SourceQualifier extends Transformation{
 	}
 	
 	public boolean validatetracingLevel(Map<String, String> validationList, int i) {
-		this.tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
+		String tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
 		return super.validatetracingLevel(tracingLevel, transformationName, validationList, i);
 		
 	}
@@ -96,6 +93,7 @@ public class SourceQualifier extends Transformation{
 	public void validate(Map<String, String> validationList, int i) {
 		// TODO Auto-generated method stub
 		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		super.trace(transformationType, transformationName);
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 		portNameValidation=validatePortName(validationList,i)?"PASS":"FAIL";
 		sourceSQLQueryValidation=validateSourceSQLQuery(validationList,i)?"PASS":"WARNING";

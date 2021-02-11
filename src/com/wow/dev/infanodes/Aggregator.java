@@ -6,12 +6,6 @@ public class Aggregator extends Transformation{
 
 	private String folderName;
 	private String transformationName;
-	private String tracingLevel;
-	private String cacheDirectory;
-	private String dataCacheSize;
-	private String indexCacheSize;
-	private String isSoretedInput;
-	
 	private String transformationNameValidation;
 	private String tracingLevelValidation;
 	private String portNameValidation;
@@ -24,7 +18,6 @@ public class Aggregator extends Transformation{
 	public Aggregator(Map<String, String> map, String transformationType,String folderName) {
 		super(map, transformationType);
 		this.folderName=folderName;
-		// TODO Auto-generated constructor stub
 	}
 	
 
@@ -34,7 +27,7 @@ public class Aggregator extends Transformation{
 	}
 	
 	public boolean validatetracingLevel(Map<String, String> validationList, int i) {
-		this.tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
+		String tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
 		return super.validatetracingLevel(tracingLevel, transformationName, validationList, i);
 	}
 	
@@ -43,7 +36,7 @@ public class Aggregator extends Transformation{
 	}
 	
 	public boolean validateLookupCacheDirectoryName(Map<String,String> validationList,int i) {
-		cacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Cache Directory");
+		String cacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Cache Directory");
 		if(!(cacheDirectory.contains("/"+folderName))) {
 			validationList.put(i+"_"+transformationName+"Aggregator Cache directory name","Aggregator ["+transformationName+"] Cache directory ["+cacheDirectory+"]is invalid");
 			return false;
@@ -52,18 +45,15 @@ public class Aggregator extends Transformation{
 	}
 	
 	public String validateIsSoretedInput() {
-		System.out.println("Validating If Aggregator inputs are sorted...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Sorted Input");
 	}
 	
 	
 	public String validateDataCacheSize() {
-		System.out.println("Validating Lookup Cache Data Size...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Aggregator Data Cache Size");
 	}
 	
 	public String validateIndexCacheSize() {
-		System.out.println("Validating Lookup Cache Index Size...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Aggregator Index Cache Size");
 	}
 	
@@ -71,6 +61,7 @@ public class Aggregator extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		super.trace(transformationType, transformationName);
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
 		cacheDirectoryValidation=validateLookupCacheDirectoryName(validationList,i)?"PASS":"FAIL";
@@ -89,32 +80,6 @@ public class Aggregator extends Transformation{
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-
-	public String getTracingLevel() {
-		return tracingLevel;
-	}
-
-
-	public String getCacheDirectory() {
-		return cacheDirectory;
-	}
-
-
-	public String getDataCacheSize() {
-		return dataCacheSize;
-	}
-
-
-	public String getIndexCacheSize() {
-		return indexCacheSize;
-	}
-
-
-	public String getIsSoretedInput() {
-		return isSoretedInput;
-	}
-
 
 	public String getTransformationNameValidation() {
 		return transformationNameValidation;

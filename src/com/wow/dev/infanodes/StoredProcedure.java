@@ -30,6 +30,7 @@ public class StoredProcedure extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationName=extractTransformationName();
+		super.trace(transformationType, transformationName);
 		storedProcedureName=extractStoredProcedureName();
 		connectionInformationName=extractConnectionInformation();
 		storedProcedureCallText=extractStoredProcedureCallText();

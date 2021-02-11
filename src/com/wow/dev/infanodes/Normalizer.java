@@ -24,6 +24,7 @@ public class Normalizer extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationName=extractTransformationName();
+		super.trace(transformationType, transformationName);
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 	}
 

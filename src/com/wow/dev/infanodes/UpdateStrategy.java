@@ -39,6 +39,7 @@ public class UpdateStrategy extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		super.trace(transformationType, transformationName);
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 		updateStrategyExpressionValidation=validateUpdateStrageyExpression(validationList,i)?"PASS":"FAIL";
 		

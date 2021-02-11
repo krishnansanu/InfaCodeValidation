@@ -37,6 +37,7 @@ public class CustomTransformation extends Transformation{
 	public void validate(Map<String, String> validationList, int i) {
 		transformationName=extractTransformationName();
 		templateName=extractTemplateName();
+		super.trace(templateName, transformationName);
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
 	}

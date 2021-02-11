@@ -6,12 +6,6 @@ public class Lookup extends Transformation{
 
 	private String folderName;
 	private String transformationName;
-//	private String isCacheEnabled;
-	private String lookupSQLOverride;
-	private String tracingLevel;
-	private String lookupCacheDirectory;
-	private String lookupCondition;
-	
 	private String transformationNameValidation;
 	private String portNameValidation;
 	private String lookupSQLOverrideValidation;
@@ -39,7 +33,7 @@ public class Lookup extends Transformation{
 	}
 	
 	public boolean validatetracingLevel(Map<String, String> validationList, int i) {
-		this.tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
+		String tracingLevel=map.get("TRANSFORMATION_TABLEATTRIBUTE.Tracing Level");
 		return super.validatetracingLevel(tracingLevel, transformationName, validationList, i);
 		
 	}
@@ -50,8 +44,7 @@ public class Lookup extends Transformation{
 	}
 	
 	public boolean validateOverrideQuery(Map<String,String> validationList,int i) {
-		this.lookupSQLOverride=map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup Sql Override");
-		System.out.println("Validating Lookup Sql Override...");
+		String lookupSQLOverride=map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup Sql Override");
 		if(!lookupSQLOverride.equals("")) {
 			validationList.put(i+"_"+transformationName+"LOOKUP.SQL Override","Override Query has been idenified in the Lookup - [" + transformationName + "].");
 			return false;
@@ -60,17 +53,15 @@ public class Lookup extends Transformation{
 	}
 	
 	public String validateIsLookupCacheEnabled() {
-		System.out.println("Validating Lookup Cache...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup caching enabled");
 	}
 	
 	public String validateLookupPolicyOnMultipleMatch() {
-		System.out.println("Validating Lookup Multiple Match Policy...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup policy on multiple match");
 	}
 	
 	public boolean validateLookupCacheDirectoryName(Map<String,String> validationList,int i) {
-		lookupCacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup cache directory name");
+		String lookupCacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup cache directory name");
 		if(!(lookupCacheDirectory.contains("/"+folderName))) {
 			validationList.put(i+"_"+transformationName+"LOOKUP Cache directory name","Lookup ["+transformationName+"] Cache directory ["+lookupCacheDirectory+"] is invalid");
 			return false;
@@ -79,34 +70,27 @@ public class Lookup extends Transformation{
 	}
 	
 	public String validateIsPersistantCache() {
-		System.out.println("Validating Is Lookup Cache Persistant...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup cache persistent");
 	}
 	
 	public String validateDataCacheSize() {
-		System.out.println("Validating Lookup Cache Data Size...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup Data Cache Size");
 	}
 	
 	public String validateIndexCacheSize() {
-		System.out.println("Validating Lookup Cache Index Size...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup Index Cache Size");
 	}
 	
 	public String validateIsDynamicLookupCache() {
-		System.out.println("Validating Is Lookup Cache Dynamic...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Dynamic Lookup Cache");
 	}
 	
 	public String validateIsSoretedInput() {
-		System.out.println("Validating If Lookup inputs are sorted...");
 		return map.get("TRANSFORMATION_TABLEATTRIBUTE.Sorted Input");
 	}
 	
 	public boolean validateLookupCondition(Map<String,String> validationList,int i) {
-		System.out.println("Validating Lookup Condition...");
-		lookupCondition=map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup condition");
-		System.out.println("Validating lookup condition. [lookup condition=" + lookupCondition + "]");
+		String lookupCondition=map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup condition");
 		if(lookupCondition==null || lookupCondition=="") {
 			validationList.put(i+"_"+transformationName+"LOOKUP Condition","Lookup ["+transformationName+"] condition should not be null");
 			return false;
@@ -119,6 +103,7 @@ public class Lookup extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		super.trace(transformationType, transformationName);
 		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
 		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
 		lookupSQLOverrideValidation=validateOverrideQuery(validationList, i)?"PASS":"WARNING";

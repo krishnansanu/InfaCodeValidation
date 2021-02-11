@@ -79,6 +79,7 @@ public class Target extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationName=extractTargetObjectName();
+		super.trace(transformationType, transformationName);
 		targetType=extractTargetObjectType();
 		updateOverrideValidation=validateTargetUpdateOverride(validationList,i)?"PASS":"WARNING";
 		preSQLValidation=validateTargetPRESQL(validationList,i)?"PASS":"WARNING";

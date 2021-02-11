@@ -100,6 +100,10 @@ public abstract class Transformation {
 		
 	}
 	
+	protected void trace(String transformationType, String transformationName) {
+		System.out.println("Validating "+ transformationType +" - " + transformationName);
+	}
+	
 	
 	
 }
