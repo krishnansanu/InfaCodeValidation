@@ -26,6 +26,7 @@ import com.wow.dev.infanodes.Joiner;
 import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
 import com.wow.dev.infanodes.Normalizer;
+import com.wow.dev.infanodes.Router;
 import com.wow.dev.infanodes.SequenceGen;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.Sorter;
@@ -134,8 +135,11 @@ public class PDFResult {
 			log_msg("   Is Workflow Valid", ":   "+wkf.getWorkflowIsValidValidation(),TAB_SPLIT);
 			log_msg("   Workflow Integration Service" , ":   "+wkf.getWorkflowIntegrationServiceValidation(),TAB_SPLIT);
 			log_msg("   Backward compatible on Workflow log" , ":   "+wkf.getWORKFLOW_BACKWARD_COMPATIBLEValidaiton(),TAB_SPLIT);
-			log_msg("   Workflow log naming standard" , ":   "+wkf.getWorkflowlogDirectoryValidation(),TAB_SPLIT);
-			log_msg("   Workflow log folder name" , ":   "+wkf.getWorkflowLogNameValidation(),TAB_SPLIT);
+			log_msg("   Workflow log naming standard" , ":   "+wkf.getWorkflowLogNameValidation(),TAB_SPLIT);
+			log_msg("   Workflow log folder name" , ":   "+wkf.getWorkflowlogDirectoryValidation(),TAB_SPLIT);
+			log_msg("   Workflow Variables" , ":   "+wkf.getWorkflowVariablesValidation(),TAB_SPLIT);
+			log_msg("   Workflow Param File Name" , ":   "+wkf.getParamFileValidation(),TAB_SPLIT);
+			log_msg("   Workflow Param File Directory" , ":   "+wkf.getParamFileDirectoryValidation(),TAB_SPLIT);
 			log_msg("\n");
 		}
 		
@@ -147,9 +151,10 @@ public class PDFResult {
 			setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 			log_msg("   Session Naming Standards" , ":   "+sess.getSessionNameValidation(),TAB_SPLIT);
 			log_msg("   Is Session Valid" , ":   "+sess.getSessionIsValidValidation(),TAB_SPLIT);
+			log_msg("   Is Session Resuable" , ":   "+sess.getSessionReusable(),TAB_SPLIT);
 			log_msg("   Backward compatible on sess log" , ":   "+sess.getSESSION_BACKWARD_COMPATIBLEValidation(),TAB_SPLIT);
-			log_msg("   Session log naming standard" , ":   "+sess.getSessionLogDirectoryValidation(),TAB_SPLIT);
-			log_msg("   Session log folder name" , ":   "+sess.getSessionLogNameValidation(),TAB_SPLIT);
+			log_msg("   Session log naming standard" , ":   "+sess.getSessionLogNameValidation(),TAB_SPLIT);
+			log_msg("   Session log folder name" , ":   "+sess.getSessionLogDirectoryValidation(),TAB_SPLIT);
 			log_msg("   Stop on Error" , ":   "+sess.getSessionStopOnErrosValidation(),TAB_SPLIT);
 			log_msg("   Session DTM Buffered Size" , ":   "+sess.getSessionDTMBufferedSizeValidation(),TAB_SPLIT); 
 			log_msg("   Session SQL Query" , ":   "+sess.getSessionSqlQueryValidation(),TAB_SPLIT);
@@ -318,6 +323,12 @@ public class PDFResult {
 						log_msg("   Normalizer Tracing Level" ,":   "+ nrm.getTracingLevelValidation(),TAB_SPLIT);
 					break;
 					
+					case "Router":
+						Router rtr=(Router)transformation[i];
+						log_msg("   Router Transformation Name" ,":   "+ rtr.getTransformationName(),TAB_SPLIT);
+						log_msg("   Router Naming Standards" ,":   "+ rtr.getTransformationNameValidation(),TAB_SPLIT);
+						log_msg("   Router Tracing Level" ,":   "+ rtr.getTracingLevelValidation(),TAB_SPLIT);
+					break;
 					
 				}
 				log_msg("");

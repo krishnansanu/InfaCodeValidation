@@ -65,7 +65,7 @@ public class Joiner extends Transformation{
 	
 	public boolean validateCacheDirectoryName(Map<String, String> validationList, int i) {
 		String cahceDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Cache Directory");
-		if(!(cahceDirectory.contains("/"+folderName))) {
+		if(!(cahceDirectory.contains(folderName))) {
 			validationList.put(i+"_"+transformationName+"Joiner Cache directory name","Joiner ["+transformationName+"] Cache directory ["+ cahceDirectory +"]is invalid");
 			return false;
 		}

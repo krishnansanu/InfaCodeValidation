@@ -62,7 +62,7 @@ public class Lookup extends Transformation{
 	
 	public boolean validateLookupCacheDirectoryName(Map<String,String> validationList,int i) {
 		String lookupCacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Lookup cache directory name");
-		if(!(lookupCacheDirectory.contains("/"+folderName))) {
+		if(!(lookupCacheDirectory.contains(folderName))) {
 			validationList.put(i+"_"+transformationName+"LOOKUP Cache directory name","Lookup ["+transformationName+"] Cache directory ["+lookupCacheDirectory+"] is invalid");
 			return false;
 		}

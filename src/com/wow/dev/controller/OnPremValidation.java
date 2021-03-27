@@ -10,6 +10,7 @@ import com.wow.dev.infanodes.Joiner;
 import com.wow.dev.infanodes.Lookup;
 import com.wow.dev.infanodes.Mapping;
 import com.wow.dev.infanodes.Normalizer;
+import com.wow.dev.infanodes.Router;
 import com.wow.dev.infanodes.SequenceGen;
 import com.wow.dev.infanodes.Session;
 import com.wow.dev.infanodes.SessionTaskInstance;
@@ -48,11 +49,14 @@ public class OnPremValidation {
 		ExtractXMLDetails xmlDetails = new ExtractXMLDetails(workflowName+".xml");
 		
 		
+		Map<String, String> workflowVariables[]=xmlDetails.extractDetailsToMap("WORKFLOWVARIABLE");
+		
+		
 		// Creation of Workflow Object for Validation
 		Map<String, String> workflowObject[]=xmlDetails.extractDetailsToMap("WORKFLOW");
 		workflows=new Workflow[workflowObject.length];
 		for(int i=0;i<workflowObject.length;i++) {
-			workflows[i] = new Workflow(workflowObject[i], folderName);
+			workflows[i] = new Workflow(workflowObject[i], folderName,workflowVariables);
 			workflows[i].validate(validationList,i);
 		}
 		
@@ -99,6 +103,7 @@ public class OnPremValidation {
 				case "Custom Transformation":transformations[i]=new CustomTransformation(trans,"Custom Transformation");break;
 				case "Stored Procedure":transformations[i]=new StoredProcedure(trans,"Stored Procedure");break;
 				case "Normalizer":transformations[i]=new Normalizer(trans,"Normalizer");break;
+				case "Router":transformations[i]=new Router(trans,"Router");break;
 			}
 			
 			if(transformations[i]!=null) transformations[i].validate(validationList, i);

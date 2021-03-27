@@ -35,7 +35,7 @@ public class Sorter extends Transformation{
 	public boolean validateCacheDirectoryName(Map<String,String> validationList,int i) {
 
 		String cacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Work Directory");
-		if(!(cacheDirectory.contains("/"+folderName))) {
+		if(!(cacheDirectory.contains(folderName))) {
 			validationList.put(i+"_"+transformationName+"Sorter Cache directory name","Sorter ["+transformationName+"] Cache directory ["+cacheDirectory+"] is invalid");
 			return false;
 		}

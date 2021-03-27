@@ -8,6 +8,7 @@ public class Session{
 	private Map<String, String> map;
 	private String sessionName;
 	private String folderName;
+	private String sessionReusable;
 	private SessionTaskInstance[] taskInstance;
 	private String sessionNameValidation;
 	private String sessionIsValidValidation;
@@ -54,6 +55,10 @@ public class Session{
 		return true;
 	}
 	
+	public String  validateIsResuableSession() {
+		return map.get("SESSION.REUSABLE");
+	}
+	
 	public boolean validateSessionBackwardCompatible(Map<String,String> validationList,int i) {
 		String SESSION_BACKWARD_COMPATIBLE=map.get("SESSION_ATTRIBUTE.Write Backward Compatible Session Log File");
 		if(!SESSION_BACKWARD_COMPATIBLE.equals("YES")) {
@@ -66,7 +71,7 @@ public class Session{
 	
 	public boolean validateSessionLogDirectory(Map<String,String> validationList, int i) {
 		String sessionLogDirectory=map.get("SESSION_ATTRIBUTE.Session Log File directory");
-		if(!sessionLogDirectory.contains("/"+folderName)) {
+		if(!sessionLogDirectory.contains(folderName)) {
 			validationList.put(i+"_SESSION_ATTRIBUTE.Session Log File directory","Session [" + map.get("SESSION.NAME") + "] Log directory ["+sessionLogDirectory+"] is invalid");
 			return false;
 		}
@@ -193,6 +198,7 @@ public class Session{
 		sessionNameValidation=validateSessionName(validationList,i)?"PASS":"FAIL";
 		System.out.println("Validating Session - " + sessionName);
 		sessionIsValidValidation=isSessionValid(validationList,i)?"PASS":"FAIL";
+		sessionReusable=validateIsResuableSession();
 		SESSION_BACKWARD_COMPATIBLEValidation=validateSessionBackwardCompatible(validationList,i)?"PASS":"FAIL";
 		sessionLogDirectoryValidation=validateSessionLogDirectory(validationList,i)?"PASS":"FAIL";
 		sessionLogNameValidation=validateSessionLog(validationList,i)?"PASS":"FAIL";
@@ -261,5 +267,11 @@ public class Session{
 	public String getSessionFAIL_PARENT_IF_INSTANCE_FAILSValidation() {
 		return sessionFAIL_PARENT_IF_INSTANCE_FAILSValidation;
 	}
+
+	public String getSessionReusable() {
+		return sessionReusable;
+	}
+	
+	
 	
 }

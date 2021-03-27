@@ -22,10 +22,14 @@ public class InfaValidationMain
 		OnPremValidation opv = new OnPremValidation(repositoryName,workflowName,folderName,validationList);
 		opv.validateWorkflow();
 		
+		System.gc();
+		
 		PDFResult pdf = new PDFResult();
 		pdf.generateOutput(opv, validationList, peerReviewerName);
 		
+		opv=null;
+		pdf=null;
 		System.gc();
-			
+		System.out.println("Validation Cmopleted for "+workflowName+", exiting from console.");
 	}
 }  

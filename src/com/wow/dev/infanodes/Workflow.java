@@ -1,6 +1,7 @@
 package com.wow.dev.infanodes;
 
 import java.util.Map;
+import java.util.Set;
 
 public class Workflow{
 	
@@ -13,11 +14,18 @@ public class Workflow{
 	private String WORKFLOW_BACKWARD_COMPATIBLEValidaiton;
 	private String workflowLogNameValidation;
 	private String workflowlogDirectoryValidation;
+	private String workflowVariablesValidation;
+	private Map<String, String> workflowVariables[];
+	private String paramFileName;
+	private String paramFileValidation;
+	private String paramFileDirectoryValidation;
 	
 	
-	public Workflow(Map<String,String> map,String folderName) {
+	
+	public Workflow(Map<String,String> map,String folderName,Map<String,String> workflowVariables[]) {
 		this.map=map;
 		this.folderName=folderName;
+		this.workflowVariables=workflowVariables;
 	}
 	
 	public boolean validateWorkflowName(Map<String,String> validationList,int i) {
@@ -32,7 +40,6 @@ public class Workflow{
 	
 	public boolean isWorkflowValid(Map<String,String> validationList,int i) {
 		String isValid=map.get("WORKFLOW.ISVALID");
-		System.out.println("Validating Workflow isValid Option. [isValid=" + isValid + "]");
 		if(!isValid.equals("YES")) {
 			validationList.put(i+"_WORKFLOW.ISVALID","Workflow [" + map.get("WORKFLOW.NAME") + "] is not valid. Please validate the Workflow to find out the issue");
 			return false;
@@ -42,7 +49,7 @@ public class Workflow{
 	
 	public boolean validateIntegrationService(Map<String,String> validationList,int i) {
 		String integrationService=map.get("WORKFLOW.SERVERNAME");
-		if(integrationService.contains("IS_ENT")) {
+		if(integrationService != null && integrationService.contains("IS_ENT")) {
 			validationList.put(i+"_WORKFLOW.INTEGRATIONSERVERNAME","Workflow [" + map.get("WORKFLOW.NAME") + "] Integration is selected as IS_ENT* Please Verify if there is a special requirement to run the workflow in ENT Integration Service");
 			return false;
 		}
@@ -52,7 +59,6 @@ public class Workflow{
 	
 	public boolean validateWorkflowBackwardCompatible(Map<String,String> validationList,int i) {
 		String WORKFLOW_BACKWARD_COMPATIBLE=map.get("WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File");
-		System.out.println("Validating Workflow Backward Compatible Option. [Backward Compatible=" + WORKFLOW_BACKWARD_COMPATIBLE + "]");
 		if(!WORKFLOW_BACKWARD_COMPATIBLE.equals("YES")) {
 			validationList.put(i+"_WORKFLOW_ATTRIBUTE.Write Backward Compatible Workflow Log File","Backward Compatible is not enabled in the Workflow - [" + map.get("WORKFLOW.NAME") + "]");
 			return false;
@@ -62,7 +68,6 @@ public class Workflow{
 	
 	public boolean validateWorkflowLog(Map<String,String> validationList,int i) {
 		String logName=map.get("WORKFLOW_ATTRIBUTE.Workflow Log File Name");
-		System.out.println("Validating Workflow log Name. [Workflow Log Name=" + logName + "]");
 		if(!logName.equals(map.get("WORKFLOW.NAME")+".log")) {
 			validationList.put(i+"_WORKFLOW_ATTRIBUTE.Workflow Log File Name","Workflow log name should be same as Workflow name [" + map.get("Workflow.NAME") + "].");
 			return false;
@@ -72,12 +77,42 @@ public class Workflow{
 	
 	public boolean validateWorkflowLogDirectory(Map<String,String> validationList,int i) {
 		String logDirectory=map.get("WORKFLOW_ATTRIBUTE.Workflow Log File Directory");
-		if(!logDirectory.contains("/"+folderName)) {
+		if(!logDirectory.contains(folderName)) {
 			validationList.put(i+"_WORKFLOW_ATTRIBUTE.Workflow Log File Directory", "Workflow [" + map.get("WORKFLOW.NAME") + "] Log directory ["+ logDirectory +"]is invalid.  ");
 			return false;
 		}
 		return true;
 	}
+	
+	public String validateWorkflowVariables() {
+		String TMP_WKF_VAR="N/A";
+		for(Map<String,String> wkfVariables:workflowVariables) {
+			String WKFNAME=wkfVariables.get("WORKFLOWVARIABLE.NAME");
+			if(wkfVariables.get("WORKFLOWVARIABLE.USERDEFINED").contentEquals("YES")) {
+				if(TMP_WKF_VAR.contentEquals("N/A")) TMP_WKF_VAR=WKFNAME; else TMP_WKF_VAR+=", "+WKFNAME;
+			}
+		}
+		return TMP_WKF_VAR;
+	}
+	
+	
+	
+	
+	public boolean validateWorkflowParameterFile() {
+		this.paramFileName=map.get("WORKFLOW_ATTRIBUTE.Parameter Filename");
+		return (paramFileName!="")?true:false;
+	}
+	
+	public boolean validateWorkflowParameterFileDirectory(Map<String,String> validationList,int i) {
+		
+		if(!paramFileName.contains(folderName)) {
+			validationList.put(i+"_WORKFLOW_ATTRIBUTE.Workflow Param File Directory", "Workflow [" + map.get("WORKFLOW.NAME") + "] Param File directory ["+ paramFileName +"] must be pointing to "+folderName+".  ");
+			return false;
+		}
+		return true;
+	}
+	
+	
 	
 	public void validate(Map<String,String> validationList,int i) {
 		workflowNameValidation=validateWorkflowName(validationList,i)?"PASS":"FAIL";
@@ -87,6 +122,9 @@ public class Workflow{
 		WORKFLOW_BACKWARD_COMPATIBLEValidaiton=validateWorkflowBackwardCompatible(validationList,i)?"PASS":"FAIL";
 		workflowLogNameValidation=validateWorkflowLog(validationList,i)?"PASS":"FAIL";
 		workflowlogDirectoryValidation=validateWorkflowLogDirectory(validationList,i)?"PASS":"WARNING";
+		workflowVariablesValidation=validateWorkflowVariables();
+		paramFileValidation=validateWorkflowParameterFile()?"Detected":"Not Detected";
+		paramFileDirectoryValidation=(paramFileName!="")?(validateWorkflowParameterFileDirectory(validationList,i)?"PASS":"WARNING"):"N/A";
 	}
 	
 	public Map<String, String> getMap() {
@@ -119,6 +157,22 @@ public class Workflow{
 
 	public String getWorkflowlogDirectoryValidation() {
 		return workflowlogDirectoryValidation;
+	}
+
+	public String getWorkflowVariablesValidation() {
+		return workflowVariablesValidation;
+	}
+
+	public String getParamFileName() {
+		return paramFileName;
+	}
+
+	public String getParamFileValidation() {
+		return paramFileValidation;
+	}
+
+	public String getParamFileDirectoryValidation() {
+		return paramFileDirectoryValidation;
 	}
 	
 }

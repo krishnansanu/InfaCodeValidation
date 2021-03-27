@@ -37,7 +37,7 @@ public class Aggregator extends Transformation{
 	
 	public boolean validateLookupCacheDirectoryName(Map<String,String> validationList,int i) {
 		String cacheDirectory=map.get("TRANSFORMATION_TABLEATTRIBUTE.Cache Directory");
-		if(!(cacheDirectory.contains("/"+folderName))) {
+		if(!(cacheDirectory.contains(folderName))) {
 			validationList.put(i+"_"+transformationName+"Aggregator Cache directory name","Aggregator ["+transformationName+"] Cache directory ["+cacheDirectory+"]is invalid");
 			return false;
 		}
