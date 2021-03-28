@@ -6,19 +6,6 @@ public class Lookup extends Transformation{
 
 	private String folderName;
 	private String transformationName;
-	private String transformationNameValidation;
-	private String portNameValidation;
-	private String lookupSQLOverrideValidation;
-	private String isCacheEnabledValidation;
-	private String lookupPolicyOnMultipleMatchValidation;
-	private String tracingLevelValidation;
-	private String lookupCacheDirectoryValidation;
-	private String isPersistantCacheValidation;
-	private String dataCacheSizeValidation;
-	private String indexCacheSizeValidation;
-	private String isDynamicLookupValidation;
-	private String isSoretedInputValidation;
-	private String lookupConditionValidation;
 	
 	
 	public Lookup(Map<String, String> map,String transformationType,String folderName) {
@@ -102,78 +89,25 @@ public class Lookup extends Transformation{
 	
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("LOOKUP_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
-		lookupSQLOverrideValidation=validateOverrideQuery(validationList, i)?"PASS":"WARNING";
-		isCacheEnabledValidation=validateIsLookupCacheEnabled();
-		lookupPolicyOnMultipleMatchValidation=validateLookupPolicyOnMultipleMatch();
-		lookupCacheDirectoryValidation=validateLookupCacheDirectoryName(validationList,i)?"PASS":"WARNING";
-		isPersistantCacheValidation=validateIsPersistantCache();
-		dataCacheSizeValidation=validateDataCacheSize();
-		indexCacheSizeValidation=validateIndexCacheSize();
-		isDynamicLookupValidation=validateIsDynamicLookupCache();
-		isSoretedInputValidation=validateIsSoretedInput();
-		lookupConditionValidation=validateLookupCondition(validationList,i)?"PASS":"WARNING";
+		transformationValidationResults.put("LOOKUP_TRACING_LEVEL_VALIDATION",validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("LOOKUP_PORT_NAME_VALIDATION",validatePortName(validationList,i)?"PASS":"WARNING");
+		transformationValidationResults.put("LOOKUP_OVERRIDE_QUERY_VALIDATION",validateOverrideQuery(validationList, i)?"PASS":"WARNING");
+		transformationValidationResults.put("LOOKUP_IS_CACHE_ENABLED_VALIDATION",validateIsLookupCacheEnabled());
+		transformationValidationResults.put("LOOKUP_POLICY_ON_MULTIPLE_MATCH_VALIDATION",validateLookupPolicyOnMultipleMatch());
+		transformationValidationResults.put("LOOKUP_CACHE_DIR_VALIDATION",validateLookupCacheDirectoryName(validationList,i)?"PASS":"WARNING");
+		transformationValidationResults.put("LOOKUP_IS_PERSISTANT_CACHE_VALIDATION",validateIsPersistantCache());
+		transformationValidationResults.put("LOOKUP_DATA_CACHE_SIZE_VALIDATION",validateDataCacheSize());
+		transformationValidationResults.put("LOOKUP_INDEX_CACHE_VALIDATION",validateIndexCacheSize());
+		transformationValidationResults.put("LOOKUP_IS_DYNAMIC_VALIDATION",validateIsDynamicLookupCache());
+		transformationValidationResults.put("LOOKUP_IS_SORTED_INPUT_VALIDATION",validateIsSoretedInput());
+		transformationValidationResults.put("LOOKUP_CONDITION_VALIDATION",validateLookupCondition(validationList,i)?"PASS":"WARNING");
 	}
 
-	public String getDataCacheSizeValidation() {
-		return dataCacheSizeValidation;
-	}
-
+	
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-	public String getPortNameValidation() {
-		return portNameValidation;
-	}
-
-	public String getLookupSQLOverrideValidation() {
-		return lookupSQLOverrideValidation;
-	}
-
-	public String getIsCacheEnabledValidation() {
-		return isCacheEnabledValidation;
-	}
-
-	public String getLookupPolicyOnMultipleMatchValidation() {
-		return lookupPolicyOnMultipleMatchValidation;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-	public String getLookupCacheDirectoryValidation() {
-		return lookupCacheDirectoryValidation;
-	}
-
-	public String getIsPersistantCacheValidation() {
-		return isPersistantCacheValidation;
-	}
-
-	public String getIndexCacheSizeValidation() {
-		return indexCacheSizeValidation;
-	}
-
-	public String getIsDynamicLookupValidation() {
-		return isDynamicLookupValidation;
-	}
-
-	public String getIsSoretedInputValidation() {
-		return isSoretedInputValidation;
-	}
-
-	public String getLookupConditionValidation() {
-		return lookupConditionValidation;
-	}
-	
-	
 
 }

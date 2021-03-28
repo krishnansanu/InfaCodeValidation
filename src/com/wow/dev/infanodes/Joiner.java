@@ -5,15 +5,6 @@ import java.util.Map;
 public class Joiner extends Transformation{
 
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
-	private String joinConditionValidation;
-	private String joinType;
-	private String dataCacheSize;
-	private String indexCacheSize;
-	private String isSortedInputs;
-	private String masterSortOrder;
-	private String cacheDirectoryValidation;
 	private String folderName;
 	
 	public Joiner(Map<String, String> map, String transformationType,String folderName) {
@@ -33,7 +24,7 @@ public class Joiner extends Transformation{
 		
 	}
 	
-	public boolean validateFilterConditionExpression(Map<String, String> validationList, int i) {
+	public boolean validateJoinConditionExpression(Map<String, String> validationList, int i) {
 		String joinConditionExpression=map.get("TRANSFORMATION_TABLEATTRIBUTE.Join Condition");
 		if (joinConditionExpression.isEmpty()) {
 			validationList.put(i+"_"+transformationName+"Join Condition Check","Joiner ["+transformationName+"] Join Condition is empty");
@@ -75,56 +66,20 @@ public class Joiner extends Transformation{
 	
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("JOINER_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		joinConditionValidation=validateFilterConditionExpression(validationList,i)?"PASS":"FAIL";
-		joinType=extractJoinType();
-		dataCacheSize=extractDataCacheSize();
-		indexCacheSize=extractIndexCacheSize();
-		isSortedInputs=isSortedInputs();
-		masterSortOrder=extractMasterSortOrder();
-		cacheDirectoryValidation=validateCacheDirectoryName(validationList,i)?"PASS":"WARNING";
+		transformationValidationResults.put("JOINER_TRACING_LEVEL_VALIDATION", validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("JOINER_CONDITION_VALIDATION", validateJoinConditionExpression(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("JOINER_TYPE_VALIDATION", extractJoinType());
+		transformationValidationResults.put("JOINER_DATA_CACHE_SIZE_VALIDATION", extractDataCacheSize());
+		transformationValidationResults.put("JOINER_INDEX_CACHE_SIZE_VALIDATION", extractIndexCacheSize());
+		transformationValidationResults.put("JOINER_IS_SORTED_INPUTS_VALIDATION", isSortedInputs());
+		transformationValidationResults.put("JOINER_MASTER_SORT_ORDER_VALIDATION", extractMasterSortOrder());
+		transformationValidationResults.put("JOINER_CACHE_DIR_VALIDATION", validateCacheDirectoryName(validationList,i)?"PASS":"WARNING");
 	}
 
 	public String getTransformationName() {
 		return transformationName;
 	}
 
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-	public String getJoinConditionValidation() {
-		return joinConditionValidation;
-	}
-
-	public String getJoinType() {
-		return joinType;
-	}
-
-	public String getDataCacheSize() {
-		return dataCacheSize;
-	}
-
-	public String getIndexCacheSize() {
-		return indexCacheSize;
-	}
-
-	public String getIsSortedInputs() {
-		return isSortedInputs;
-	}
-
-	public String getMasterSortOrder() {
-		return masterSortOrder;
-	}
-
-	public String getCacheDirectoryValidation() {
-		return cacheDirectoryValidation;
-	}
-	
 }

@@ -1,5 +1,6 @@
 package com.wow.dev.infanodes;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -7,11 +8,13 @@ public abstract class Transformation {
 	
 	protected Map<String, String> map;
 	protected String transformationType;
+	protected Map<String, String> transformationValidationResults;
 	
 	
 	public Transformation(Map<String, String> map,String transformationType) {
 		this.map=map;
 		this.transformationType=transformationType;
+		transformationValidationResults=new LinkedHashMap<String, String>();
 	}
 	
 	public Map<String, String> getMap() {
@@ -104,6 +107,9 @@ public abstract class Transformation {
 		System.out.println("Validating "+ transformationType +" - " + transformationName);
 	}
 	
+	public Map<String, String> getValidationResults(){
+		return transformationValidationResults;
+	}
 	
 	
 }

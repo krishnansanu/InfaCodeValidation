@@ -5,7 +5,6 @@ import java.util.Map;
 public class Normalizer extends Transformation{
 	
 	private String transformationName;
-	private String tracingLevelValidation;
 	
 	public Normalizer(Map<String, String> map, String transformationType) {
 		super(map, transformationType);
@@ -25,14 +24,11 @@ public class Normalizer extends Transformation{
 	public void validate(Map<String, String> validationList, int i) {
 		transformationName=extractTransformationName();
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("NORMALIZER_TRACING_LEVEL_VALIDATION",validatetracingLevel(validationList,i)?"PASS":"FAIL");
 	}
 
 	public String getTransformationName() {
 		return transformationName;
 	}
 
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
 }

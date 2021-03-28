@@ -6,13 +6,6 @@ public class Aggregator extends Transformation{
 
 	private String folderName;
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
-	private String portNameValidation;
-	private String cacheDirectoryValidation;
-	private String dataCacheSizeValidation;
-	private String indexCacheSizeValidation;
-	private String isSoretedInputValidation;
 	
 	
 	public Aggregator(Map<String, String> map, String transformationType,String folderName) {
@@ -60,17 +53,15 @@ public class Aggregator extends Transformation{
 
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("AGGREGATOR_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
-		cacheDirectoryValidation=validateLookupCacheDirectoryName(validationList,i)?"PASS":"FAIL";
-		dataCacheSizeValidation=validateDataCacheSize();
-		indexCacheSizeValidation=validateIndexCacheSize();
-		isSoretedInputValidation=validateIsSoretedInput();
-		
+		transformationValidationResults.put("AGGREGATOR_TRACING_LEVEL_VALIDATION", validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("AGGREGATOR_PORT_NAME_VALIDATION", validatePortName(validationList,i)?"PASS":"WARNING");
+		transformationValidationResults.put("AGGREGATOR_CACHE_DIR_VALIDATION", validateLookupCacheDirectoryName(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("AGGREGATOR_DATA_CACHE_SIZE_VALIDATION", validateDataCacheSize());
+		transformationValidationResults.put("AGGREGATOR_INDEX_CACHE_SIZE_VALIDATION", validateIndexCacheSize());
+		transformationValidationResults.put("AGGREGATOR_IS_SORTED_INPUT_VALIDATION", validateIsSoretedInput());
 	}
-
 
 	public String getFolderName() {
 		return folderName;
@@ -80,41 +71,4 @@ public class Aggregator extends Transformation{
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-
-	public String getPortNameValidation() {
-		return portNameValidation;
-	}
-
-
-	public String getCacheDirectoryValidation() {
-		return cacheDirectoryValidation;
-	}
-
-
-	public String getDataCacheSizeValidation() {
-		return dataCacheSizeValidation;
-	}
-
-
-	public String getIndexCacheSizeValidation() {
-		return indexCacheSizeValidation;
-	}
-
-
-	public String getIsSoretedInputValidation() {
-		return isSoretedInputValidation;
-	}
-	
-	
-
 }

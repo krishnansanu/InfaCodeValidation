@@ -1,24 +1,16 @@
 package com.wow.dev.infanodes;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Workflow{
 	
 	private Map<String, String> map;
 	private String workflowName;
 	private String folderName;
-	private String workflowNameValidation;
-	private String workflowIsValidValidation;
-	private String workflowIntegrationServiceValidation;
-	private String WORKFLOW_BACKWARD_COMPATIBLEValidaiton;
-	private String workflowLogNameValidation;
-	private String workflowlogDirectoryValidation;
-	private String workflowVariablesValidation;
 	private Map<String, String> workflowVariables[];
 	private String paramFileName;
-	private String paramFileValidation;
-	private String paramFileDirectoryValidation;
+	private Map<String, String> workflowValidationResults;
 	
 	
 	
@@ -26,6 +18,7 @@ public class Workflow{
 		this.map=map;
 		this.folderName=folderName;
 		this.workflowVariables=workflowVariables;
+		workflowValidationResults=new LinkedHashMap<String, String>();
 	}
 	
 	public boolean validateWorkflowName(Map<String,String> validationList,int i) {
@@ -115,16 +108,16 @@ public class Workflow{
 	
 	
 	public void validate(Map<String,String> validationList,int i) {
-		workflowNameValidation=validateWorkflowName(validationList,i)?"PASS":"FAIL";
+		workflowValidationResults.put("WORKFLOW_NAME_VALIDATION", validateWorkflowName(validationList,i)?"PASS":"FAIL");
 		System.out.println("Validating Workflow - " + workflowName);
-		workflowIsValidValidation=isWorkflowValid(validationList,i)?"PASS":"FAIL";
-		workflowIntegrationServiceValidation=validateIntegrationService(validationList,i)?"PASS":"WARNING";
-		WORKFLOW_BACKWARD_COMPATIBLEValidaiton=validateWorkflowBackwardCompatible(validationList,i)?"PASS":"FAIL";
-		workflowLogNameValidation=validateWorkflowLog(validationList,i)?"PASS":"FAIL";
-		workflowlogDirectoryValidation=validateWorkflowLogDirectory(validationList,i)?"PASS":"WARNING";
-		workflowVariablesValidation=validateWorkflowVariables();
-		paramFileValidation=validateWorkflowParameterFile()?"Detected":"Not Detected";
-		paramFileDirectoryValidation=(paramFileName!="")?(validateWorkflowParameterFileDirectory(validationList,i)?"PASS":"WARNING"):"N/A";
+		workflowValidationResults.put("WORKFLOW_IS_VALID",isWorkflowValid(validationList,i)?"PASS":"FAIL");
+		workflowValidationResults.put("WORKFLOW_INTEGRATION_SERVICE_VALIDATION",validateIntegrationService(validationList,i)?"PASS":"WARNING");
+		workflowValidationResults.put("WORKFLOW_BACKWARD_COMPATIBLE_VALIDATION",validateWorkflowBackwardCompatible(validationList,i)?"PASS":"FAIL");
+		workflowValidationResults.put("WORKFLOW_LOG_VALIDATION",validateWorkflowLog(validationList,i)?"PASS":"FAIL");
+		workflowValidationResults.put("WORKFLOW_LOG_DIR_VALIDATION",validateWorkflowLogDirectory(validationList,i)?"PASS":"WARNING");
+		workflowValidationResults.put("WORKFLOW_VARIABLES_VALIDATION",validateWorkflowVariables());
+		workflowValidationResults.put("WORKFLOW_PARM_FILE_VALIDATION",validateWorkflowParameterFile()?"Detected":"Not Detected");
+		workflowValidationResults.put("WORKFLOW_PARM_FILE_DIR_VALID",(paramFileName!="")?(validateWorkflowParameterFileDirectory(validationList,i)?"PASS":"WARNING"):"N/A");
 	}
 	
 	public Map<String, String> getMap() {
@@ -135,44 +128,9 @@ public class Workflow{
 		return workflowName;
 	}
 
-	public String getWorkflowNameValidation() {
-		return workflowNameValidation;
+	public Map<String,String> getValidationResults(){
+		return workflowValidationResults;
 	}
 
-	public String getWorkflowIsValidValidation() {
-		return workflowIsValidValidation;
-	}
-
-	public String getWorkflowIntegrationServiceValidation() {
-		return workflowIntegrationServiceValidation;
-	}
-
-	public String getWORKFLOW_BACKWARD_COMPATIBLEValidaiton() {
-		return WORKFLOW_BACKWARD_COMPATIBLEValidaiton;
-	}
-
-	public String getWorkflowLogNameValidation() {
-		return workflowLogNameValidation;
-	}
-
-	public String getWorkflowlogDirectoryValidation() {
-		return workflowlogDirectoryValidation;
-	}
-
-	public String getWorkflowVariablesValidation() {
-		return workflowVariablesValidation;
-	}
-
-	public String getParamFileName() {
-		return paramFileName;
-	}
-
-	public String getParamFileValidation() {
-		return paramFileValidation;
-	}
-
-	public String getParamFileDirectoryValidation() {
-		return paramFileDirectoryValidation;
-	}
 	
 }

@@ -1,7 +1,12 @@
 package com.wow.dev.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Iterator;
 import java.util.Map;
-
 import com.wow.dev.infanodes.Aggregator;
 import com.wow.dev.infanodes.Expression;
 import com.wow.dev.infanodes.Filter;
@@ -36,6 +41,13 @@ public class OnPremValidation {
 	private String workflowName;
 	private String folderName;
 	
+	
+	// Validation of Results
+	private int TOTAL_TEST_CASE_COUNT;
+	private int PASS_CASE_COUNT;
+	private int FAIL_CASE_COUNT;
+	private int WARNING_CASE_COUNT;
+	
 	public OnPremValidation(String repositoryName,String workflowName,String folderName,Map<String,String> validationList) {
 		this.validationList=validationList;
 		this.repositoryName=repositoryName;
@@ -58,6 +70,7 @@ public class OnPremValidation {
 		for(int i=0;i<workflowObject.length;i++) {
 			workflows[i] = new Workflow(workflowObject[i], folderName,workflowVariables);
 			workflows[i].validate(validationList,i);
+			validateTestCase(workflows[i].getValidationResults());
 		}
 		
 		
@@ -74,6 +87,7 @@ public class OnPremValidation {
 		for(int i=0;i<sessionObject.length;i++) {
 			sessions[i] = new Session(sessionObject[i], folderName,taskInstances);
 			sessions[i].validate(validationList,i);
+			validateTestCase(sessions[i].getValidationResults());
 		}
 		
 		
@@ -82,6 +96,7 @@ public class OnPremValidation {
 		for(int i=0;i<mappings.length;i++) {
 			mappings[i]=new Mapping(mappingObject[i], folderName);
 			mappings[i].validate(validationList,i);
+			validateTestCase(mappings[i].getValidationResults());
 		}
 		
 		Map<String, String> transformationObject[]=xmlDetails.extractDetailsToMap("TRANSFORMATION");
@@ -106,7 +121,10 @@ public class OnPremValidation {
 				case "Router":transformations[i]=new Router(trans,"Router");break;
 			}
 			
-			if(transformations[i]!=null) transformations[i].validate(validationList, i);
+			if(transformations[i]!=null) {
+				transformations[i].validate(validationList, i);
+				validateTestCase(transformations[i].getValidationResults());
+			}
 		}
 		
 		
@@ -117,8 +135,40 @@ public class OnPremValidation {
 		for(int i=0;i<targets.length;i++) {
 			targets[i]=new Target(targetObject[i], folderName,instanceObject);
 			targets[i].validate(validationList,i);
+			validateTestCase(targets[i].getValidationResults());
 		}
+	}
+	
+	
+	
+	public void validateTestCase(Map<String, String> validationResults) {
 		
+		Iterator<String> it=validationResults.values().iterator();
+		
+		while(it.hasNext()) {
+			String value=it.next();
+			if(value.equalsIgnoreCase("FAIL")) {
+				FAIL_CASE_COUNT++;
+			}else if(value.equalsIgnoreCase("WARNING")) {
+				WARNING_CASE_COUNT++;
+			}else {
+				PASS_CASE_COUNT++;
+			}
+			
+			TOTAL_TEST_CASE_COUNT++;
+		}
+	}
+	
+	public void createTestSummaryReport() {
+
+		try {
+			File report=new File("Informatica_code_review_test_summary_report.txt");
+			if(!report.exists()) {report.createNewFile();}
+			String testSummary=workflowName + " - [TOTAL TEST CASE : " + TOTAL_TEST_CASE_COUNT + ", PASS : " + PASS_CASE_COUNT + ", FAIL : " + FAIL_CASE_COUNT + ", WARNING : " + WARNING_CASE_COUNT + "]\n";
+		    Files.write(Paths.get("Informatica_code_review_test_summary_report.txt"), testSummary.getBytes(), StandardOpenOption.APPEND);
+		}catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public Workflow[] getWorkflows() {
@@ -156,5 +206,22 @@ public class OnPremValidation {
 	public String getFolderName() {
 		return folderName;
 	}
+
+	public int getTOTAL_TEST_CASE_COUNT() {
+		return TOTAL_TEST_CASE_COUNT;
+	}
+
+	public int getPASS_CASE_COUNT() {
+		return PASS_CASE_COUNT;
+	}
+
+	public int getFAIL_CASE_COUNT() {
+		return FAIL_CASE_COUNT;
+	}
+
+	public int getWARNING_CASE_COUNT() {
+		return WARNING_CASE_COUNT;
+	}
+	
 	
 }

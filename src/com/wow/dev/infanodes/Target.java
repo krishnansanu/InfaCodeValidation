@@ -5,10 +5,6 @@ import java.util.Map;
 public class Target extends Transformation{
 	private Map<String, String> instanceObject[];
 	private String transformationName;
-	private String targetType;
-	private String updateOverrideValidation;
-	private String preSQLValidation;
-	private String postSQLValidation;
 
 	public Target(Map<String, String> map, String transformationType,Map<String, String> instanceObject[]) {
 		super(map, transformationType);
@@ -80,33 +76,14 @@ public class Target extends Transformation{
 	public void validate(Map<String, String> validationList, int i) {
 		transformationName=extractTargetObjectName();
 		super.trace(transformationType, transformationName);
-		targetType=extractTargetObjectType();
-		updateOverrideValidation=validateTargetUpdateOverride(validationList,i)?"PASS":"WARNING";
-		preSQLValidation=validateTargetPRESQL(validationList,i)?"PASS":"WARNING";
-		postSQLValidation=validateTargetPOSTSQL(validationList,i)?"PASS":"WARNING";
+		transformationValidationResults.put("TARGET_TYPE_VALIDATION",extractTargetObjectType());
+		transformationValidationResults.put("TARGET_UPDATE_OVERRIDE_VALIDATION",validateTargetUpdateOverride(validationList,i)?"PASS":"WARNING");
+		transformationValidationResults.put("TARGET_PRE_SQL_VALIDATION",validateTargetPRESQL(validationList,i)?"PASS":"WARNING");
+		transformationValidationResults.put("TARGET_POST_SQL_VALIDATION",validateTargetPOSTSQL(validationList,i)?"PASS":"WARNING");
 	}
 
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getTargetType() {
-		return targetType;
-	}
-
-	public String getUpdateOverrideValidation() {
-		return updateOverrideValidation;
-	}
-
-	public String getPreSQLValidation() {
-		return preSQLValidation;
-	}
-
-	public String getPostSQLValidation() {
-		return postSQLValidation;
-	}
-	
-	
-	
 	
 }

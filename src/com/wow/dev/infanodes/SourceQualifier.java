@@ -5,17 +5,6 @@ import java.util.Map;
 public class SourceQualifier extends Transformation{
 	
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
-	private String portNameValidation;
-	private String sourceSQLQueryValidation;
-	private String sourceUserDefinedJoinValidation;
-	private String sourceFilterValidation;
-	private String sourceSortedInputValidation;
-	private String sourceIsDistinctValidation;
-	private String sourceIsPartionableValidation;
-	private String sourcePRESQLValidation;
-	private String sourcePOSTSQLValidation;
 	
 	public SourceQualifier(Map<String, String> map,String transformationType) {
 		super(map,transformationType);
@@ -92,80 +81,23 @@ public class SourceQualifier extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		// TODO Auto-generated method stub
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("SOURCE_QUALIFIER_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		portNameValidation=validatePortName(validationList,i)?"PASS":"FAIL";
-		sourceSQLQueryValidation=validateSourceSQLQuery(validationList,i)?"PASS":"WARNING";
-		sourceUserDefinedJoinValidation=(validateSourceUserDefinedJoin()!="")?"YES":"NO";
-		sourceFilterValidation=(validateSourceFilter()!="")?"YES":"NO";
-		sourceSortedInputValidation=validateSourceSortedPorts();
-		sourceIsDistinctValidation=validateSourceIsDistinct();
-		sourceIsPartionableValidation=validateSourceIsPartionable();
-		sourcePRESQLValidation=validateSourcePRESQLQuery(validationList,i)?"PASS":"WARNING";
-		sourcePOSTSQLValidation=validateSourcePOSTSQLQuery(validationList,i)?"PASS":"WARNING";
+		transformationValidationResults.put("SOURCE_QUALIFIER_TRACING_LEVEL_VALIDATION", validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("SOURCE_QUALIFIER_PORT_NAME_VALIDATION", validatePortName(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("SOURCE_QUALIFIER_SQL_QUERY_VALIDATION", validateSourceSQLQuery(validationList,i)?"PASS":"WARNING");
+		transformationValidationResults.put("SOURCE_QUALIFIER_USER_DEFINED_JOINS_VALIDATION", (validateSourceUserDefinedJoin()!="")?"YES":"NO");
+		transformationValidationResults.put("SOURCE_QUALIFIER_FILTER_VALIDATION", (validateSourceFilter()!="")?"YES":"NO");
+		transformationValidationResults.put("SOURCE_QUALIFIER_IS_SORTED_INPUTS_VALIDATION", validateSourceSortedPorts());
+		transformationValidationResults.put("SOURCE_QUALIFIER_IS_DISTINCT_VALIDATION", validateSourceIsDistinct());
+		transformationValidationResults.put("SOURCE_QUALIFIER_IS_PARTIONABLE_VALIDATION", validateSourceIsPartionable());
+		transformationValidationResults.put("SOURCE_QUALIFIER_PRE_SQL_QUERY_VALIDATION", validateSourcePRESQLQuery(validationList,i)?"PASS":"WARNING");
+		transformationValidationResults.put("SOURCE_QUALIFIER_POST_SQL_QUERY_VALIDATION", validateSourcePOSTSQLQuery(validationList,i)?"PASS":"WARNING");
 	}
 
 
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-
-	public String getSourceSQLQueryValidation() {
-		return sourceSQLQueryValidation;
-	}
-
-
-	public String getSourceUserDefinedJoinValidation() {
-		return sourceUserDefinedJoinValidation;
-	}
-
-
-	public String getSourceFilterValidation() {
-		return sourceFilterValidation;
-	}
-
-
-	public String getSourceSortedInputValidation() {
-		return sourceSortedInputValidation;
-	}
-
-
-	public String getSourceIsDistinctValidation() {
-		return sourceIsDistinctValidation;
-	}
-
-
-	public String getSourceIsPartionableValidation() {
-		return sourceIsPartionableValidation;
-	}
-
-
-	public String getSourcePRESQLValidation() {
-		return sourcePRESQLValidation;
-	}
-
-
-	public String getSourcePOSTSQLValidation() {
-		return sourcePOSTSQLValidation;
-	}
-
-
-	public String getPortNameValidation() {
-		return portNameValidation;
-	}
-	
-	
 
 }

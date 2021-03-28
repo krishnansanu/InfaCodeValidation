@@ -5,9 +5,6 @@ import java.util.Map;
 public class SequenceGen extends Transformation{
 	
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
-	
 
 	public SequenceGen(Map<String, String> map, String transformationType) {
 		super(map, transformationType);
@@ -27,23 +24,13 @@ public class SequenceGen extends Transformation{
 	
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("SEQUENCE_GEN_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("SEQUENCE_GEN_TRACING_LEVEL_VALIDATION", validatetracingLevel(validationList,i)?"PASS":"FAIL");
 	}
 
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-	
-	
 
 }

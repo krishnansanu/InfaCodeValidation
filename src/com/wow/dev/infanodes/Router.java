@@ -5,8 +5,6 @@ import java.util.Map;
 public class Router extends Transformation{
 
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
 	
 	public Router(Map<String, String> map, String transformationType) {
 		super(map, transformationType);
@@ -26,21 +24,12 @@ public class Router extends Transformation{
 
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("ROUTER_NAME_VALIDATION",validateTransforamtionName(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("ROUTER_TRACING_LEVEL_VALIDATION",validatetracingLevel(validationList,i)?"PASS":"FAIL");
 	}
 
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-	
 	
 }

@@ -5,11 +5,6 @@ import java.util.Map;
 public class StoredProcedure extends Transformation{
 	
 	private String transformationName;
-	private String storedProcedureName;
-	private String connectionInformationName;
-	private String storedProcedureCallText;
-	private String storedProcedureType;
-	private String tracingLevelValidation;
 	
 	public StoredProcedure(Map<String, String> map, String transformationType) {
 		super(map, transformationType);
@@ -31,37 +26,15 @@ public class StoredProcedure extends Transformation{
 	public void validate(Map<String, String> validationList, int i) {
 		transformationName=extractTransformationName();
 		super.trace(transformationType, transformationName);
-		storedProcedureName=extractStoredProcedureName();
-		connectionInformationName=extractConnectionInformation();
-		storedProcedureCallText=extractStoredProcedureCallText();
-		storedProcedureType=extractStoredProcedureType();
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("STORED_PROCEDURE_NAME", extractStoredProcedureName());
+		transformationValidationResults.put("STORED_PROCEDURE_TYPE_VALIDATION",extractStoredProcedureType());
+		transformationValidationResults.put("STORED_PROCEDURE_CONNECTION_VALIDATION",extractConnectionInformation());
+		transformationValidationResults.put("STORED_PROCEDURE_CALL_TEXT_VALIDATION",extractStoredProcedureCallText());
+		transformationValidationResults.put("STORED_PROCEDURE_TRACING_LEVEL_VALIDATION",validatetracingLevel(validationList,i)?"PASS":"FAIL");
 	}
 
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getStoredProcedureName() {
-		return storedProcedureName;
-	}
-
-	public String getConnectionInformationName() {
-		return connectionInformationName;
-	}
-
-	public String getStoredProcedureCallText() {
-		return storedProcedureCallText;
-	}
-
-	public String getStoredProcedureType() {
-		return storedProcedureType;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-
 
 }

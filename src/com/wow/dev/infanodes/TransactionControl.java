@@ -5,9 +5,6 @@ import java.util.Map;
 public class TransactionControl extends Transformation{
 	
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
-	private String filterConditionValidation;
 	
 	public TransactionControl(Map<String, String> map, String transformationType) {
 		super(map, transformationType);
@@ -37,30 +34,14 @@ public class TransactionControl extends Transformation{
 
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("TRANSACTION_CONTROL_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		filterConditionValidation=validateFilterConditionExpression(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("TRANSACTION_CONTROL_TRACING_LEVEL_VALIDATION", validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("TRANSACTION_CONTROL_CONDITION_VALIDATION", validateFilterConditionExpression(validationList,i)?"PASS":"FAIL");
 	}
 
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-	public String getFilterConditionValidation() {
-		return filterConditionValidation;
-	}
-	
-	
-	
-
 
 }

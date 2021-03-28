@@ -5,9 +5,6 @@ import java.util.Map;
 public class CustomTransformation extends Transformation{
 	
 	private String transformationName;
-	private String tracingLevelValidation;
-	private String portNameValidation;
-	private String templateName;
 	
 	public CustomTransformation(Map<String, String> map,String transformationType) {
 		super(map,transformationType);
@@ -36,27 +33,15 @@ public class CustomTransformation extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		transformationName=extractTransformationName();
-		templateName=extractTemplateName();
+		String templateName=extractTemplateName();
 		super.trace(templateName, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
+		transformationValidationResults.put("CUSTOM_TRANSFORMATION_TEMPLATE_VALIDATION", templateName);
+		transformationValidationResults.put("CUSTOM_TRANSFORMATION_TRACING_LEVEL_VALIDATION", validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("CUSTOM_TRANSFORMATION_PORT_NAME_VALIDATION", validatePortName(validationList,i)?"PASS":"WARNING");
 	}
-	
 	
 	public String getTransformationName() {
 		return transformationName;
 	}
-	
-	
-	public String getTemplateName() {
-		return templateName;
-	}
 
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-	public String getPortnameValidation() {
-		return portNameValidation;
-	}
 }

@@ -6,12 +6,6 @@ public class Sorter extends Transformation{
 
 	private String folderName;
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
-	private String portNameValidation;
-	private String cacheDirectoryValidation;
-	private String cacheSizeValidation;
-	private String isDistinctInputValidation;
 	
 	public Sorter(Map<String, String> map, String transformationType,String folderName) {
 		super(map, transformationType);
@@ -54,43 +48,17 @@ public class Sorter extends Transformation{
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
 		// TODO Auto-generated method stub
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("SORTER_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
-		cacheSizeValidation=validateSorterCacheSize();
-		cacheDirectoryValidation=validateCacheDirectoryName(validationList,i)?"PASS":"FAIL";
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		isDistinctInputValidation=validateIsDistinctInput();
+		transformationValidationResults.put("SORTER_PORT_NAME_VALIDATION", validatePortName(validationList,i)?"PASS":"WARNING");
+		transformationValidationResults.put("SORTER_CACHE_SIZE_VALIDATION", validateSorterCacheSize());
+		transformationValidationResults.put("SORTER_CACHE_DIR_VALIDATION", validateCacheDirectoryName(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("SORTER_TRACING_LEVEL_VALIDATION", validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("SORTER_IS_DISTINCT_INPUT_VALIDATION", validateIsDistinctInput());
 	}
 
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-	public String getPortNameValidation() {
-		return portNameValidation;
-	}
-
-	public String getCacheDirectoryValidation() {
-		return cacheDirectoryValidation;
-	}
-
-	public String getCacheSizeValidation() {
-		return cacheSizeValidation;
-	}
-
-	public String getIsDistinctInputValidation() {
-		return isDistinctInputValidation;
-	}
-	
-	
 
 }

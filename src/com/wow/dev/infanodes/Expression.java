@@ -5,9 +5,6 @@ import java.util.Map;
 public class Expression extends Transformation{
 	
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
-	private String portNameValidation;
 	
 	public Expression(Map<String, String> map,String transformationType) {
 		super(map,transformationType);
@@ -31,10 +28,10 @@ public class Expression extends Transformation{
 
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("EXPRESSION_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		portNameValidation=validatePortName(validationList,i)?"PASS":"WARNING";
+		transformationValidationResults.put("EXPRESSION_TRACING_LEVEL_VALIDATION",validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("EXPRESSION_PORT_NAME_VALIDATION",validatePortName(validationList,i)?"PASS":"WARNING");
 	}
 	
 	
@@ -45,20 +42,5 @@ public class Expression extends Transformation{
 	public String getTransformationType() {
 		return transformationType;
 	}
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-	public String getPortnameValidation() {
-		return portNameValidation;
-	}
-	
-	
-	
 
 }

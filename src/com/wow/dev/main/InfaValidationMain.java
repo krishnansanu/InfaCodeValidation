@@ -21,6 +21,7 @@ public class InfaValidationMain
 		
 		OnPremValidation opv = new OnPremValidation(repositoryName,workflowName,folderName,validationList);
 		opv.validateWorkflow();
+		opv.createTestSummaryReport();
 		
 		System.gc();
 		

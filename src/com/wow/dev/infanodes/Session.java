@@ -1,5 +1,6 @@
 package com.wow.dev.infanodes;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,26 +9,17 @@ public class Session{
 	private Map<String, String> map;
 	private String sessionName;
 	private String folderName;
-	private String sessionReusable;
 	private SessionTaskInstance[] taskInstance;
-	private String sessionNameValidation;
-	private String sessionIsValidValidation;
-	private String SESSION_BACKWARD_COMPATIBLEValidation;
-	private String sessionLogDirectoryValidation;
-	private String sessionLogNameValidation;
-	private String sessionStopOnErrosValidation;
-	private String sessionDTMBufferedSizeValidation;
-	private String sessionSqlQueryValidation;
-	private String sessionSqlOverrideValidation;
-	private String sessionOverrideTracing;
-	private String sessionFAIL_PARENT_IF_INSTANCE_DID_NOT_RUNValidation;
-	private String sessionFAIL_PARENT_IF_INSTANCE_FAILSValidation;
+	
+	
+	Map<String, String> sessionValidationResults;
 	
 	
 	public Session(Map<String,String> map,String folderName,SessionTaskInstance[] taskInstances) {
 		this.map=map;
 		this.folderName=folderName;
 		this.taskInstance=taskInstances;
+		sessionValidationResults=new LinkedHashMap<String, String>();
 	}
 	
 	public boolean validateSessionName(Map<String,String> validationList,int i) {
@@ -195,20 +187,20 @@ public class Session{
 		}
 		
 	public void validate(Map<String,String> validationList,int i) {
-		sessionNameValidation=validateSessionName(validationList,i)?"PASS":"FAIL";
+		sessionValidationResults.put("SESSION_NAME_VALIDATION", validateSessionName(validationList,i)?"PASS":"FAIL");
 		System.out.println("Validating Session - " + sessionName);
-		sessionIsValidValidation=isSessionValid(validationList,i)?"PASS":"FAIL";
-		sessionReusable=validateIsResuableSession();
-		SESSION_BACKWARD_COMPATIBLEValidation=validateSessionBackwardCompatible(validationList,i)?"PASS":"FAIL";
-		sessionLogDirectoryValidation=validateSessionLogDirectory(validationList,i)?"PASS":"FAIL";
-		sessionLogNameValidation=validateSessionLog(validationList,i)?"PASS":"FAIL";
-		sessionStopOnErrosValidation=validateStopOnErros(validationList,i)?"PASS":"WARNING";
-		sessionDTMBufferedSizeValidation=validateDTMBufferedSize(validationList,i)?"PASS":"WARNING";
-		sessionSqlQueryValidation=validateSQLQuery(validationList,i)?"PASS":"WARNING";
-		sessionSqlOverrideValidation=validateOverrideQuery(validationList,i)?"PASS":"WARNING";
-		sessionOverrideTracing=validateOverrideTacing(validationList,i)?"PASS":"FAIL";
-		sessionFAIL_PARENT_IF_INSTANCE_DID_NOT_RUNValidation=validateFAIL_PARENT_IF_INSTANCE_DID_NOT_RUN(validationList,i)?"PASS":"FAIL";
-		sessionFAIL_PARENT_IF_INSTANCE_FAILSValidation=validateFAILPARENT_IF_INSTANCE_FAILS(validationList,i)?"PASS":"FAIL";
+		sessionValidationResults.put("SESSION_IS_VALID", isSessionValid(validationList,i)?"PASS":"FAIL");
+		sessionValidationResults.put("SESSION_IS_RESULABLE_VALIDATION", validateIsResuableSession());
+		sessionValidationResults.put("SESSION_BACKWARD_COMPATIBLE_VALIBATION", validateSessionBackwardCompatible(validationList,i)?"PASS":"FAIL");
+		sessionValidationResults.put("SESSION_LOG_DIR_VALIDATION", validateSessionLogDirectory(validationList,i)?"PASS":"FAIL");
+		sessionValidationResults.put("SESSION_LOG_VALIDATION", validateSessionLog(validationList,i)?"PASS":"FAIL");
+		sessionValidationResults.put("SESSION_STOP_ON_ERROS_VALIDATION", validateStopOnErros(validationList,i)?"PASS":"WARNING");
+		sessionValidationResults.put("SESSION_DTM_BUFFERED_SIZE_VALIDATION", validateDTMBufferedSize(validationList,i)?"PASS":"WARNING");
+		sessionValidationResults.put("SESSION_SQL_QUERY_VALIDATION", validateSQLQuery(validationList,i)?"PASS":"WARNING");
+		sessionValidationResults.put("SESSION_OVERRIDE_VALIDATION", validateOverrideQuery(validationList,i)?"PASS":"WARNING");
+		sessionValidationResults.put("SESSION_OVERRIDE_TRACING_VALIDATION", validateOverrideTacing(validationList,i)?"PASS":"FAIL");
+		sessionValidationResults.put("SESSION_FAIL_PARENT_IF_INSTANCE_DID_NOT_RUN_VALIDATION",validateFAIL_PARENT_IF_INSTANCE_DID_NOT_RUN(validationList,i)?"PASS":"FAIL");
+		sessionValidationResults.put("SESSION_FAIL_PARENT_IF_INSTANCE_FAILS_VALIDATION",validateFAILPARENT_IF_INSTANCE_FAILS(validationList,i)?"PASS":"FAIL");
 	}
 	
 	//Getter
@@ -220,58 +212,8 @@ public class Session{
 		return sessionName;
 	}
 
-	public String getSessionNameValidation() {
-		return sessionNameValidation;
+	public Map<String, String> getValidationResults() {
+		return sessionValidationResults;
 	}
 
-	public String getSessionIsValidValidation() {
-		return sessionIsValidValidation;
-	}
-
-	public String getSESSION_BACKWARD_COMPATIBLEValidation() {
-		return SESSION_BACKWARD_COMPATIBLEValidation;
-	}
-
-	public String getSessionLogDirectoryValidation() {
-		return sessionLogDirectoryValidation;
-	}
-
-	public String getSessionLogNameValidation() {
-		return sessionLogNameValidation;
-	}
-
-	public String getSessionStopOnErrosValidation() {
-		return sessionStopOnErrosValidation;
-	}
-
-	public String getSessionDTMBufferedSizeValidation() {
-		return sessionDTMBufferedSizeValidation;
-	}
-
-	public String getSessionSqlQueryValidation() {
-		return sessionSqlQueryValidation;
-	}
-
-	public String getSessionSqlOverrideValidation() {
-		return sessionSqlOverrideValidation;
-	}
-
-	public String getSessionOverrideTracing() {
-		return sessionOverrideTracing;
-	}
-
-	public String getSessionFAIL_PARENT_IF_INSTANCE_DID_NOT_RUNValidation() {
-		return sessionFAIL_PARENT_IF_INSTANCE_DID_NOT_RUNValidation;
-	}
-
-	public String getSessionFAIL_PARENT_IF_INSTANCE_FAILSValidation() {
-		return sessionFAIL_PARENT_IF_INSTANCE_FAILSValidation;
-	}
-
-	public String getSessionReusable() {
-		return sessionReusable;
-	}
-	
-	
-	
 }

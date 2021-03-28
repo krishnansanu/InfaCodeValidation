@@ -5,10 +5,6 @@ import java.util.Map;
 public class UpdateStrategy extends Transformation{
 	
 	private String transformationName;
-	private String transformationNameValidation;
-	private String tracingLevelValidation;
-	private String updateStrategyExpressionValidation;
-	
 
 	public UpdateStrategy(Map<String, String> map, String transformationType) {
 		super(map,transformationType);
@@ -38,10 +34,10 @@ public class UpdateStrategy extends Transformation{
 
 	@Override
 	public void validate(Map<String, String> validationList, int i) {
-		transformationNameValidation=validateTransforamtionName(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("UPDATE_STRATEGY_NAME_VALIDATION", validateTransforamtionName(validationList,i)?"PASS":"FAIL");
 		super.trace(transformationType, transformationName);
-		tracingLevelValidation=validatetracingLevel(validationList,i)?"PASS":"FAIL";
-		updateStrategyExpressionValidation=validateUpdateStrageyExpression(validationList,i)?"PASS":"FAIL";
+		transformationValidationResults.put("UPDATE_STRATEGY_TRACING_LEVEL_VALIDATION", validatetracingLevel(validationList,i)?"PASS":"FAIL");
+		transformationValidationResults.put("UPDATE_STRATEGY_EXPRESSION_VALIDATION", validateUpdateStrageyExpression(validationList,i)?"PASS":"FAIL");
 		
 	}
 	
@@ -49,19 +45,5 @@ public class UpdateStrategy extends Transformation{
 	public String getTransformationName() {
 		return transformationName;
 	}
-
-	public String getTransformationNameValidation() {
-		return transformationNameValidation;
-	}
-
-	public String getTracingLevelValidation() {
-		return tracingLevelValidation;
-	}
-
-	public String getUpdateStrategyExpressionValidation() {
-		return updateStrategyExpressionValidation;
-	}
-	
-	
 
 }

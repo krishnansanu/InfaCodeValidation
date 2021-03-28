@@ -1,23 +1,20 @@
 package com.wow.dev.infanodes;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class Mapping{
 	
 	private Map<String, String> map;
+	private Map<String, String> mappingValidationResults;
 	private String mappingName;
-	private String mappingNameValidation;
-	private String mappingIsValidValidation;
 	private int transformationCount;
-	private String transformationList;
 	private int mappingVariableCount;
-	private String mappingVariableNameValidation;
-	private String mappingSQLQueryValidation;
-	
 	
 	public Mapping(Map<String, String> map,String folderName) {
 		this.map=map;
+		mappingValidationResults=new LinkedHashMap<String, String>();
 	}
 	
 	
@@ -79,7 +76,8 @@ public class Mapping{
 		return true;
 	}
 
-	public void getTransformationDetails() {
+	public String getTransformationDetails() {
+		String transformationList=null;
 		Set<String> keys=map.keySet();
 		for(String key:keys) {
 			if(key.contains("TRANSFORMATION.NAME")) {
@@ -91,15 +89,18 @@ public class Mapping{
 				}
 			}
 		}
+		return transformationList;
 	}
 	
 	public void validate(Map<String,String> validationList,int i) {
-		mappingNameValidation=validateMappingName(validationList,i)?"PASS":"FAIL";
+		mappingValidationResults.put("MAPPING_NAME_VALIDATION",validateMappingName(validationList,i)?"PASS":"FAIL");
 		System.out.println("Validating Mapping - " + mappingName);
-		mappingIsValidValidation=isMappingvalid(validationList,i)?"PASS":"FAIL";
-		mappingVariableNameValidation=validateMappingVariableName(validationList,i)?"PASS":"FAIL";
-		mappingSQLQueryValidation=validateSQLQuery(validationList,i)?"PASS":"WARNING";
-		getTransformationDetails();
+		mappingValidationResults.put("MAPPING_IS_VALID",isMappingvalid(validationList,i)?"PASS":"FAIL");
+		mappingValidationResults.put("MAPPING_VARIABLE_NAME_VALIDATION",validateMappingVariableName(validationList,i)?"PASS":"FAIL");
+		mappingValidationResults.put("MAPPING_VARIABLE_COUNT_VALIDATION",Integer.toString(mappingVariableCount));
+		mappingValidationResults.put("MAPPING_TRANSFORMATION_LIST_VALIDATION",getTransformationDetails());
+		mappingValidationResults.put("MAPPING_TRANSFORMATION_COUNT_VALIDATION", Integer.toString(transformationCount));
+		mappingValidationResults.put("MAPPING_SQL_QUERY_VALIDATION",validateSQLQuery(validationList,i)?"PASS":"WARNING");
 	}
 	
 	
@@ -107,46 +108,12 @@ public class Mapping{
 		return map;
 	}
 
+	public Map<String, String> getValidationResults() {
+		return mappingValidationResults;
+	}
 
 	public String getMappingName() {
 		return mappingName;
 	}
 
-
-	public String getMappingNameValidation() {
-		return mappingNameValidation;
-	}
-
-
-	public String getMappingIsValidValidation() {
-		return mappingIsValidValidation;
-	}
-
-
-	public String getMappingVariableNameValidation() {
-		return mappingVariableNameValidation;
-	}
-
-
-	public String getMappingSQLQueryValidation() {
-		return mappingSQLQueryValidation;
-	}
-
-
-	public int getMappingVariableCount() {
-		return mappingVariableCount;
-	}
-
-
-	public int getTransformationCount() {
-		return transformationCount;
-	}
-
-
-	public String getTransformationList() {
-		return transformationList;
-	}
-	
-	
-	
 }
