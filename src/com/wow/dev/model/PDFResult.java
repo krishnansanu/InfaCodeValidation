@@ -13,12 +13,16 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.TabSettings;
+import com.itextpdf.text.Font.FontStyle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.wow.dev.controller.OnPremValidation;
 import com.wow.dev.infanodes.Aggregator;
+import com.wow.dev.infanodes.ApplicationSourceQualifier;
 import com.wow.dev.infanodes.Expression;
 import com.wow.dev.infanodes.Filter;
 import com.wow.dev.infanodes.CustomTransformation;
@@ -52,7 +56,9 @@ public class PDFResult {
 			font.setFamily(BaseFont.COURIER);
 			font.setSize(10);
 			paragraph.setFont(font);
-			pdfDoc= new Document();
+			paragraph.setSpacingAfter(4f);
+			Rectangle pagesize = new Rectangle(714, 864);
+			pdfDoc= new Document(pagesize);
 		}catch(Exception e) {log_msg(e.getMessage());}
 	}
 	
@@ -81,11 +87,11 @@ public class PDFResult {
 		float TAB_SPLIT=300f;
 		log_msg("");
 		
-		setFontAttribute(font, 16, BaseColor.BLACK, paragraph, Element.ALIGN_CENTER, Font.BOLD);
+		setFontAttribute(font, 18, BaseColor.BLACK, paragraph, Element.ALIGN_CENTER, Font.BOLD);
 		log_msg("----------------------------------------------------");
 		log_msg("Powercenter Code Review – ICC Standards check Report");
 		log_msg("----------------------------------------------------");
-		setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+		setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 		
 		log_msg("\n");
 		log_msg("Workflow Name",":   "+opv.getWorkflowName(),TAB_SPLIT);
@@ -103,10 +109,10 @@ public class PDFResult {
 		Target targets[]=opv.getTargets();
 		
 		log_msg("");
-		setFontAttribute(font, 11, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
+		setFontAttribute(font, 14, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
 		log_msg("Objects validated");
 		log_msg("-----------------");
-		setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+		setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 		log_msg("");
 		
 		for(int i=0;i<workflows.length;i++)
@@ -119,18 +125,18 @@ public class PDFResult {
 			log_msg("Mapping",":   "+mappings[i].getMappingName(),TAB_SPLIT);
 		
 		log_msg("");
-		setFontAttribute(font, 11, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
+		setFontAttribute(font, 14, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
 		log_msg("Code Compliance Checklist and Status");
 		log_msg("------------------------------------");
-		setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+		setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 		log_msg("");
 		
 		
 		for(int i=0;i<workflows.length;i++) {
 			Workflow wkf=workflows[i];
-			setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
+			setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
 			log_msg(wkf.getWorkflowName());
-			setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+			setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 			log_msg("   Workflow Naming Standards" , ":   "+wkf.getValidationResults().get("WORKFLOW_NAME_VALIDATION"),TAB_SPLIT);
 			log_msg("   Is Workflow Valid", ":   "+ wkf.getValidationResults().get("WORKFLOW_IS_VALID"),TAB_SPLIT);
 			log_msg("   Workflow Integration Service" , ":   "+wkf.getValidationResults().get("WORKFLOW_INTEGRATION_SERVICE_VALIDATION"),TAB_SPLIT);
@@ -146,9 +152,9 @@ public class PDFResult {
 		
 		for(int i=0;i<sessions.length;i++) {
 			Session sess=sessions[i];
-			setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
+			setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
 			log_msg(sess.getSessionName());
-			setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+			setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 			log_msg("   Session Naming Standards" , ":   "+sess.getValidationResults().get("SESSION_NAME_VALIDATION"),TAB_SPLIT);
 			log_msg("   Is Session Valid" , ":   "+sess.getValidationResults().get("SESSION_IS_VALID"),TAB_SPLIT);
 			log_msg("   Is Session Resuable" , ":   "+sess.getValidationResults().get("SESSION_IS_RESULABLE_VALIDATION"),TAB_SPLIT);
@@ -168,9 +174,9 @@ public class PDFResult {
 		
 		for(int i=0;i<mappings.length;i++) {
 			Mapping map=mappings[i];
-			setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
+			setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
 			log_msg(map.getMappingName());
-			setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+			setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 			log_msg("   Mapping Naming Standards" ,":   "+ map.getValidationResults().get("MAPPING_NAME_VALIDATION"),TAB_SPLIT);
 			log_msg("   Is Mapping Valid" , ":   "+ map.getValidationResults().get("MAPPING_IS_VALID"),TAB_SPLIT);
 			log_msg("   Mapping  variables Standards" ,":   "+ map.getValidationResults().get("MAPPING_VARIABLE_NAME_VALIDATION"),TAB_SPLIT);
@@ -181,9 +187,9 @@ public class PDFResult {
 			log_msg("\n");
 		}
 		
-		setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
+		setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
 		log_msg("Transformation Validation");
-		setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+		setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 		
 		for(int i=0;i<transformation.length;i++) {
 			
@@ -253,7 +259,18 @@ public class PDFResult {
 						log_msg("   SQ PRE SQL" ,":   "+ sq.getValidationResults().get("SOURCE_QUALIFIER_PRE_SQL_QUERY_VALIDATION"),TAB_SPLIT);
 						log_msg("   SQ POST SQL" ,":   "+ sq.getValidationResults().get("SOURCE_QUALIFIER_POST_SQL_QUERY_VALIDATION"),TAB_SPLIT);
 					break;
-						
+
+					case "Application Source Qualifier":
+						ApplicationSourceQualifier asq=(ApplicationSourceQualifier)transformation[i];
+						log_msg("   SQ Name" ,":   "+ asq.getTransformationName(),TAB_SPLIT);
+						log_msg("   SQ Naming Standards" ,":   "+ asq.getValidationResults().get("SOURCE_QUALIFIER_NAME_VALIDATION"),TAB_SPLIT);
+						log_msg("   SQ Tracing Level" ,":   "+ asq.getValidationResults().get("SOURCE_QUALIFIER_TRACING_LEVEL_VALIDATION"),TAB_SPLIT);
+						log_msg("   SQ User Defined Join" ,":   "+ asq.getValidationResults().get("SOURCE_QUALIFIER_USER_DEFINED_JOINS_VALIDATION"),TAB_SPLIT);
+						log_msg("   SQ Source Filter" ,":   "+ asq.getValidationResults().get("SOURCE_QUALIFIER_FILTER_VALIDATION"),TAB_SPLIT);
+						log_msg("   SQ Static Filter" ,":   "+ asq.getValidationResults().get("SOURCE_QUALIFIER_STATIC_FILTER_VALIDATION"),TAB_SPLIT);
+					break;
+					
+					
 					case "Update Strategy":
 						UpdateStrategy upd=(UpdateStrategy)transformation[i];
 						log_msg("   Update Strategy Name" ,":   "+ upd.getTransformationName(),TAB_SPLIT);
@@ -346,20 +363,20 @@ public class PDFResult {
 		}
 		
 
-		setFontAttribute(font, 11, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
+		setFontAttribute(font, 14, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
 		log_msg("Test Case Summary");
 		log_msg("-----------------");
-		setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+		setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 		log_msg("   Total Test Case Executed",":   "+ opv.getTOTAL_TEST_CASE_COUNT(),TAB_SPLIT);
 		log_msg("   Pass Count",":   "+ opv.getPASS_CASE_COUNT(),TAB_SPLIT);
 		log_msg("   Fail Count",":   "+ opv.getFAIL_CASE_COUNT(),TAB_SPLIT);
 		log_msg("   Warning Count",":   "+ opv.getWARNING_CASE_COUNT(),TAB_SPLIT);
 		log_msg("\n");
 		
-		setFontAttribute(font, 11, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
+		setFontAttribute(font, 14, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.BOLD);
 		log_msg("Please find the review comments below");
 		log_msg("-------------------------------------");
-		setFontAttribute(font, 10, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
+		setFontAttribute(font, 12, BaseColor.BLACK, paragraph, Element.ALIGN_LEFT, Font.NORMAL);
 		
 		if(validationList.isEmpty()) {
 			log_msg("Informatica components are created as per the ICC Standards..");

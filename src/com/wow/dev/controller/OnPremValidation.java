@@ -8,6 +8,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Iterator;
 import java.util.Map;
 import com.wow.dev.infanodes.Aggregator;
+import com.wow.dev.infanodes.ApplicationSourceQualifier;
 import com.wow.dev.infanodes.Expression;
 import com.wow.dev.infanodes.Filter;
 import com.wow.dev.infanodes.CustomTransformation;
@@ -60,9 +61,13 @@ public class OnPremValidation {
 		// Reading XML and extracting NodeDetails from XML file.
 		ExtractXMLDetails xmlDetails = new ExtractXMLDetails(workflowName+".xml");
 		
+		Map<String, String> repo[]=xmlDetails.extractDetailsToMap("REPOSITORY");
+		for(int i=0;i<repo.length;i++) {
+			repositoryName=repo[i].get("REPOSITORY.NAME");
+		}
+		
 		
 		Map<String, String> workflowVariables[]=xmlDetails.extractDetailsToMap("WORKFLOWVARIABLE");
-		
 		
 		// Creation of Workflow Object for Validation
 		Map<String, String> workflowObject[]=xmlDetails.extractDetailsToMap("WORKFLOW");
@@ -110,6 +115,7 @@ public class OnPremValidation {
 				case "Aggregator": transformations[i]=new Aggregator(trans,"Aggregator",folderName);break;
 				case "Sorter": transformations[i]=new Sorter(trans,"Sorter",folderName);break;
 				case "Source Qualifier": transformations[i]=new SourceQualifier(trans,"Source Qualifier");break;
+				case "Application Source Qualifier": transformations[i]=new ApplicationSourceQualifier(trans,"Application Source Qualifier");break;
 				case "Update Strategy":transformations[i]=new UpdateStrategy(trans,"Update Strategy");break;
 				case "Sequence":transformations[i]=new SequenceGen(trans,"Sequence");break;
 				case "Filter":transformations[i]=new Filter(trans,"Filter");break;
